@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recurso Educativo - IA en Administración de Operaciones: Del Prompt a la Decisión</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding-bottom: 80px; }
+    .container { width: 100%; max-width: 1100px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; min-height: 700px; position: relative; margin-top: 3.8cm; }
+    
+    /* ============================================================
+       BANNER INSTITUCIONAL FIJO - ANCHO COMPLETO - 3.8 cm
+       ============================================================ */
+    .banner-institucional {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3.8cm;
+        z-index: 9999;
+        background: #003366;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .banner-institucional img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .container {
+        margin-top: 3.8cm;
+    }
+
+    /* ============================================================
+       BARRA DE PROGRESO - Debajo del banner
+       ============================================================ */
+    .progress-bar-container {
+        position: fixed;
+        top: 3.8cm;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: #e0e0e0;
+        z-index: 9998;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #003366, #0066cc);
+        transition: width 0.5s ease;
+        border-radius: 0 3px 3px 0;
+    }
+    .progress-text {
+        position: fixed;
+        top: 3.8cm;
+        right: 15px;
+        font-size: 11px;
+        color: #003366;
+        font-weight: bold;
+        z-index: 9998;
+        background: rgba(255,255,255,0.85);
+        padding: 2px 10px;
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    /* Ajuste del container para que no quede debajo de la barra */
+    .container {
+        margin-top: calc(3.8cm + 6px);
+    }
+
+    /* El resto de estilos se mantienen igual */
+    .slide { display: none; padding: 40px; animation: fade 0.4s; }
+    .slide.active { display: block; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+    
+    h2 { color: #003366; border-bottom: 3px solid #0066cc; padding-bottom: 10px; margin-bottom: 25px; font-size: 24px; }
+    p { line-height: 1.7; color: #333; margin-bottom: 15px; }
+    
+    .box { background: #f0f7ff; border-left: 5px solid #0066cc; padding: 20px; border-radius: 6px; margin: 20px 0; }
+    .box h3 { color: #003366; margin-bottom: 10px; }
+    .info { background: #e8f4f8; border-left: 4px solid #17a2b8; padding: 15px; border-radius: 6px; margin: 15px 0; color: #0c5460; }
+    
+    .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; align-items: start; }
+    .split-left { padding: 10px; }
+    .split-right { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    
+    .creative-image { width: 100%; max-width: 420px; height: 340px; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,102,204,0.2); cursor: pointer; transition: 0.3s; background: linear-gradient(135deg, #e8f4f8 0%, #c3d9e8 100%); position: relative; }
+    .creative-image:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 12px 35px rgba(0,102,204,0.3); }
+    .creative-image svg { width: 100%; height: 100%; }
+    .creative-image .click-hint { position: absolute; bottom: 10px; right: 10px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 15px; font-size: 11px; color: #003366; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    
+    .figure-caption { margin-top: 10px; font-size: 12px; color: #003366; font-style: italic; text-align: center; font-weight: bold; }
+    .figure-source { margin-top: 5px; font-size: 11px; color: #666; font-style: italic; text-align: center; }
+    
+    .alt-btn { margin-top: 8px; background: #17a2b8; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+    .alt-btn:hover { background: #138496; transform: scale(1.05); }
+    
+    /* ============================================================
+       VIDEO BOX - Estilos mejorados (con reproductor nativo)
+       ============================================================ */
+    .video-box {
+        background: #1a1a2e;
+        color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .video-box .video-info {
+        background: #0f3460;
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 15px auto;
+        text-align: center;
+    }
+    .video-box .video-info .icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+    .video-box .video-info p {
+        color: #fff;
+        margin: 5px 0;
+    }
+    .video-box .video-info .title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    
+    /* Reproductor de video nativo */
+    .video-box .native-video {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto 15px auto;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .video-box .native-video video {
+        width: 100%;
+        height: auto;
+        display: block;
+        background: #000;
+    }
+    
+    .video-box .video-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .video-btn {
+        background: #ff0000;
+        color: #fff;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .video-btn:hover {
+        background: #cc0000;
+        transform: scale(1.05);
+    }
+    .script-btn {
+        background: transparent;
+        border: 2px solid #fff;
+        color: #fff;
+        padding: 10px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .script-btn:hover {
+        background: #fff;
+        color: #003366;
+    }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .card { background: #fff; border: 2px solid #e0e0e0; border-radius: 8px; padding: 15px; cursor: pointer; transition: 0.3s; }
+    .card:hover { border-color: #0066cc; box-shadow: 0 5px 15px rgba(0,102,204,0.15); transform: translateX(5px); }
+    .card h4 { color: #003366; margin-bottom: 6px; font-size: 14px; }
+    .card p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
+
+    .btn-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+    .btn-act { background: linear-gradient(90deg, #ffeaa7, #fdcb6e); border: none; padding: 15px 20px; border-radius: 8px; font-size: 14px; font-weight: bold; color: #2d3436; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+    .btn-act:hover { transform: translateX(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .btn-act::before { content: "+"; background: #e17055; color: #fff; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+    .case { background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; border-radius: 6px; margin: 20px 0; }
+    .case h4 { color: #856404; margin-bottom: 10px; }
+    .case ul { margin-left: 20px; color: #856404; line-height: 1.8; }
+
+    .conclusion { background: #e8f4f8; border-left: 4px solid #0066cc; padding: 15px; margin: 10px 0; border-radius: 6px; }
+    .conclusion h4 { color: #003366; margin-bottom: 5px; }
+    .biblio { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 6px; font-size: 14px; }
+    .credits { background: linear-gradient(135deg, #003366, #0066cc); color: #fff; padding: 40px; border-radius: 10px; text-align: center; }
+    .credits p { color: #fff; margin: 8px 0; }
+
+    /* ============================================================
+       PANEL DE RESULTADOS - Estilos
+       ============================================================ */
+    .results-panel {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        margin: 20px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        border: 1px solid #e8e8e8;
+    }
+    .results-panel h3 {
+        color: #003366;
+        font-size: 20px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #0066cc;
+        padding-bottom: 10px;
+    }
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        margin: 8px 0;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #0066cc;
+    }
+    .result-item .label {
+        font-weight: 600;
+        color: #333;
+    }
+    .result-item .score {
+        font-weight: 700;
+        font-size: 18px;
+        padding: 4px 15px;
+        border-radius: 15px;
+        background: #e8f4f8;
+        color: #003366;
+    }
+    .result-item .score.pass { background: #d4edda; color: #155724; }
+    .result-item .score.fail { background: #f8d7da; color: #721c24; }
+    .result-item .score.excellent { background: #cce5ff; color: #004085; }
+    .result-summary {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    .result-summary .stat {
+        text-align: center;
+        padding: 15px;
+        background: #f0f7ff;
+        border-radius: 10px;
+    }
+    .result-summary .stat .number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #003366;
+    }
+    .result-summary .stat .desc {
+        font-size: 13px;
+        color: #666;
+        margin-top: 5px;
+    }
+    .result-summary .stat .number.green { color: #28a745; }
+    .result-summary .stat .number.red { color: #dc3545; }
+    .result-summary .stat .number.blue { color: #0066cc; }
+
+    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 100; }
+    .nav-btn { background: #0066cc; color: #fff; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 14px; }
+    .nav-btn:hover { background: #003366; }
+    .nav-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .nav-btn.tts-btn { background: #28a745; }
+    .nav-btn.tts-btn:hover { background: #218838; }
+    .counter { color: #003366; font-weight: bold; font-size: 14px; }
+
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+    .overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 10px; max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto; animation: slideDown 0.3s; }
+    @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header { background: #003366; color: #fff; padding: 15px 25px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+    .modal-header h3 { font-size: 18px; }
+    .close-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+    .modal-body { padding: 25px; line-height: 1.7; font-size: 15px; color: #333; }
+    
+    /* ============================================================
+       MODAL DE VIDEO - Ya no se usa con videos locales, pero lo mantengo por si acaso
+       ============================================================ */
+    .video-modal .modal-body {
+        padding: 0;
+    }
+    .video-modal .modal-body iframe {
+        width: 100%;
+        height: 400px;
+        border: none;
+        border-radius: 0 0 10px 10px;
+    }
+    @media (max-width: 768px) {
+        .video-modal .modal-body iframe {
+            height: 250px;
+        }
+    }
+    
+    /* ============================================================
+       ESTILOS PARA PREGUNTAS EN DOS COLUMNAS
+       ============================================================ */
+    .q-container .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .q-container .options-grid .option {
+        margin-bottom: 0;
+    }
+    @media (max-width: 768px) {
+        .q-container .options-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .q-container { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #0066cc; margin: 15px 0; }
+    .q-text { font-weight: bold; color: #003366; margin-bottom: 15px; font-size: 15px; }
+    .option { background: #fff; padding: 12px 15px; border-radius: 6px; border: 2px solid #e0e0e0; cursor: pointer; margin-bottom: 8px; transition: 0.2s; font-size: 14px; }
+    .option:hover { background: #e3f2fd; border-color: #0066cc; }
+    
+    .feedback { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 25px; border-radius: 10px; max-width: 550px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 2000; }
+    .feedback.active { display: block; }
+    .feedback.correct { border-top: 5px solid #00b894; }
+    .feedback.incorrect { border-top: 5px solid #d63031; }
+    .fb-header { font-size: 18px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .feedback.correct .fb-header { color: #00b894; }
+    .feedback.incorrect .fb-header { color: #d63031; }
+    .fb-close { margin-top: 15px; background: #0066cc; color: #fff; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; }
+    
+    .tts-controls { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0; }
+    .tts-ctrl-btn { background: #0066cc; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; }
+    .tts-ctrl-btn:hover { background: #003366; }
+
+    /* Estilo específico para la portada */
+    .portada-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        min-height: 500px;
+        padding: 20px;
+        position: relative;
+    }
+    .portada-container .portada-imagen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+    .portada-container .portada-imagen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .portada-container .portada-titulo {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 600px;
+        padding: 30px;
+        background: rgba(255,255,255,0.85);
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        margin-left: auto;
+        margin-right: 20px;
+        text-align: left;
+    }
+    .portada-container .portada-titulo h1 {
+        color: #3A95E4;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0;
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(58,149,228,0.2);
+    }
+
+    @media (max-width: 768px) {
+        .banner-institucional {
+            height: 3.8cm;
+        }
+        .container {
+            margin-top: calc(3.8cm + 6px);
+        }
+        .progress-text {
+            display: none;
+        }
+        .result-summary {
+            grid-template-columns: 1fr;
+        }
+        .video-box .video-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        .video-btn, .script-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        .split-layout {
+            grid-template-columns: 1fr;
+        }
+        .portada-container {
+            flex-direction: column;
+            gap: 20px;
+            min-height: auto;
+            padding: 0;
+        }
+        .portada-container .portada-imagen {
+            position: relative;
+            height: 250px;
+        }
+        .portada-container .portada-titulo {
+            margin: 0;
+            max-width: 100%;
+            background: rgba(255,255,255,0.95);
+        }
+        .portada-container .portada-titulo h1 {
+            font-size: 32px;
+            text-align: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BANNER INSTITUCIONAL - LOCAL (desde tu carpeta)
+     ============================================================ -->
+<div class="banner-institucional">
+    <img src="header-banner.jpg" alt="Banner institucional UNAD VIMEP">
+</div>
+
+<!-- ============================================================
+     BARRA DE PROGRESO
+     ============================================================ -->
+<div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+<div class="progress-text" id="progressText">0%</div>
+
+<div class="container">
+    <!-- Slide 1: Portada -->
+    <div class="slide active" id="slide-1">
+        <div class="portada-container">
+            <div class="portada-imagen">
+                <img src="Portada.jpg" alt="Portada del recurso educativo">
+            </div>
+            <div class="portada-titulo">
+                <h1>IA en Administración de Operaciones:<br>Del Prompt a la Decisión</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Bienvenida -->
+    <div class="slide" id="slide-2">
+        <h2>Bienvenida</h2>
+        <p>¡Cordial saludo, estimados estudiantes! Bienvenidos a este recurso educativo de alto nivel diseñado para transformar su manera de abordar los desafíos operativos.</p>
+        <p>En este recurso educativo aprenderán a usar la IA generativa como aliada estratégica para resolver problemas reales de operaciones, sin necesidad de saber programar. Solo necesitan traer su criterio analítico y la disposición de experimentar.</p>
+        <p>Descubrirán cómo convertir cualquier desafío operativo en una decisión accionable mediante un flujo estructurado: <strong>prompt → código → validación</strong>. ¡Bienvenidos y mucho éxito!</p>
+    </div>
+
+    <!-- Slide 3: Objetivo -->
+    <div class="slide" id="slide-3">
+        <h2>Objetivo de Aprendizaje</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <div class="box">
+                    <h3>Objetivo</h3>
+                    <p>Diseñar y ejecutar un flujo estructurado de IA generativa (prompt → código → validación) para la toma de decisiones en administración de operaciones, mediante la categorización de problemas, el diseño de prompts efectivos, la generación de código y el análisis de escenarios, para transformar desafíos de inventarios, logística o calidad en decisiones accionables.</p>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Objetivo Imagen')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="targetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e8f4f8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c3d9e8;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#003366;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0066cc;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#targetGrad)"/>
+                        <circle cx="210" cy="170" r="110" fill="none" stroke="#003366" stroke-width="3" opacity="0.3"/>
+                        <circle cx="210" cy="170" r="80" fill="none" stroke="#003366" stroke-width="3" opacity="0.5"/>
+                        <circle cx="210" cy="170" r="50" fill="none" stroke="#003366" stroke-width="3" opacity="0.7"/>
+                        <circle cx="210" cy="170" r="25" fill="#0066cc"/>
+                        <circle cx="210" cy="170" r="10" fill="#fff"/>
+                        <path d="M 60 290 L 195 180" stroke="url(#arrowGrad)" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#003366" />
+                            </marker>
+                        </defs>
+                        <text x="30" y="315" font-size="14" fill="#003366" font-weight="bold">Problema</text>
+                        <text x="190" y="175" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">Decisión</text>
+                        <text x="210" y="60" font-size="13" fill="#003366" text-anchor="middle" font-weight="bold">Ruta al Éxito</text>
+                        <circle cx="95" cy="260" r="8" fill="#e17055"/>
+                        <text x="110" y="265" font-size="10" fill="#333">Categorizar</text>
+                        <circle cx="130" cy="230" r="8" fill="#fdcb6e"/>
+                        <text x="145" y="235" font-size="10" fill="#333">Variables</text>
+                        <circle cx="160" cy="200" r="8" fill="#00b894"/>
+                        <text x="175" y="205" font-size="10" fill="#333">Prompt</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 1. Ruta al éxito</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 1 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Video 1 - Presentación (LOCAL) -->
+    <div class="slide" id="slide-4">
+        <h2>Video de Presentación del Recurso</h2>
+        <div class="info"><h4>Instrucciones</h4><p>En el siguiente video se proporcionará una visión general del contenido del recurso educativo, destacando cómo la IA generativa puede convertirse en su aliada estratégica para resolver problemas operativos complejos.</p></div>
+        <div class="video-box">
+            <div class="video-info">
+                <div class="icon">🎬</div>
+                <p class="title">IA en Administración de Operaciones: Del Prompt a la Decisión</p>
+            </div>
+            <div class="native-video">
+                <video controls preload="metadata" playsinline>
+                    <source src="Video 1.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Presaberes -->
+    <div class="slide" id="slide-5">
+        <h2>Actividad de Presaberes</h2>
+        <div class="info"><h4>Instrucciones</h4><p>Evaluemos tus conocimientos previos sobre IA generativa y su aplicación en operaciones. Responde las <strong>5 preguntas</strong> de selección múltiple. Esta actividad es diagnóstica.</p></div>
+        <div class="btn-list">
+            <button class="btn-act" onclick="openQuestion(1)">Pregunta 1: Automatización vs. IA Generativa</button>
+            <button class="btn-act" onclick="openQuestion(2)">Pregunta 2: Concepto de "Prompt"</button>
+            <button class="btn-act" onclick="openQuestion(3)">Pregunta 3: Riesgo de no validar resultados</button>
+            <button class="btn-act" onclick="openQuestion(4)">Pregunta 4: Herramientas de ejecución en la nube</button>
+            <button class="btn-act" onclick="openQuestion(5)">Pregunta 5: Importancia de la validación humana</button>
+        </div>
+    </div>
+
+    <!-- Slide 6: Contenido -->
+    <div class="slide" id="slide-6">
+        <h2>Contenido</h2>
+        <div class="box">
+            <h3>Estructura del Recurso Educativo</h3>
+            <p>El siguiente contenido está organizado en cinco pasos clave que conforman el flujo <strong>"Del Prompt a la Decisión"</strong>. Cada paso incluye explicaciones detalladas, ejemplos prácticos y actividades interactivas para fortalecer el aprendizaje.</p>
+        </div>
+        <div class="grid">
+            <div class="card" onclick="openPopup('Contenido Paso1')"><h4>Paso 1</h4><p>Categorizar el Problema Operativo</p></div>
+            <div class="card" onclick="openPopup('Contenido Paso2')"><h4>Paso 2</h4><p>Identificar las Variables Clave</p></div>
+            <div class="card" onclick="openPopup('Contenido Paso3')"><h4>Paso 3</h4><p>Diseñar un Prompt Efectivo</p></div>
+            <div class="card" onclick="openPopup('Contenido Paso4')"><h4>Paso 4</h4><p>Generar el Código</p></div>
+            <div class="card" onclick="openPopup('Contenido Paso5')"><h4>Paso 5</h4><p>Analizar Escenarios y Validar</p></div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="color: #666; font-size: 14px;">Haz clic en cada paso para obtener más información.</p>
+        </div>
+    </div>
+
+    <!-- Slide 7: Paso 1 -->
+    <div class="slide" id="slide-7">
+        <h2>Paso 1: Categorizar el Problema Operativo</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>El primer paso es identificar el tipo de problema operativo. Las categorías principales son:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Cat Inventarios')"><h4>Inventarios</h4><p>Niveles de stock, punto de reorden, EOQ, costos de almacenamiento.</p></div>
+                    <div class="card" onclick="openPopup('Cat Pronóstico')"><h4>Pronóstico</h4><p>Predicción de ventas, tendencias, estacionalidad, series de tiempo.</p></div>
+                    <div class="card" onclick="openPopup('Cat Transporte')"><h4>Transporte/Logística</h4><p>Rutas de distribución, optimización de flotas, costos de envío.</p></div>
+                    <div class="card" onclick="openPopup('Cat Calidad')"><h4>Calidad</h4><p>Control de calidad, tasas de defectos, Six Sigma, capacidad de procesos.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Paso 1')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff9e6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ffe4a3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg1)"/>
+                        <circle cx="60" cy="170" r="25" fill="#003366"/>
+                        <text x="60" y="175" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Problema</text>
+                        <path d="M 85 165 Q 150 80 250 70" stroke="#e17055" stroke-width="3" fill="none" marker-end="url(#arr1)"/>
+                        <path d="M 85 170 Q 170 130 250 130" stroke="#fdcb6e" stroke-width="3" fill="none" marker-end="url(#arr2)"/>
+                        <path d="M 85 175 Q 170 210 250 210" stroke="#00b894" stroke-width="3" fill="none" marker-end="url(#arr3)"/>
+                        <path d="M 85 180 Q 150 260 250 270" stroke="#0066cc" stroke-width="3" fill="none" marker-end="url(#arr4)"/>
+                        <defs>
+                            <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e17055"/></marker>
+                            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#fdcb6e"/></marker>
+                            <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#00b894"/></marker>
+                            <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0066cc"/></marker>
+                        </defs>
+                        <rect x="255" y="50" width="130" height="40" rx="8" fill="#e17055"/>
+                        <text x="320" y="75" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">Inventarios</text>
+                        <rect x="255" y="110" width="130" height="40" rx="8" fill="#fdcb6e"/>
+                        <text x="320" y="135" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">Pronóstico</text>
+                        <rect x="255" y="190" width="130" height="40" rx="8" fill="#00b894"/>
+                        <text x="320" y="215" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">Logística</text>
+                        <rect x="255" y="250" width="130" height="40" rx="8" fill="#0066cc"/>
+                        <text x="320" y="275" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">Calidad</text>
+                        <text x="210" y="30" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">Cuatro caminos posibles</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 2. Cuatro caminos posibles</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 2 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Paso 2 -->
+    <div class="slide" id="slide-8">
+        <h2>Paso 2: Identificar las Variables Clave</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>Una vez categorizado el problema, identifica las variables clave que serán los parámetros de entrada para tu prompt y tu código.</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Var Costos')"><h4>Costos</h4><p>Fijos, variables, de mantenimiento y de quiebre de stock.</p></div>
+                    <div class="card" onclick="openPopup('Var Demandas')"><h4>Demandas</h4><p>Histórica, proyectada, estacionalidad y factores externos.</p></div>
+                    <div class="card" onclick="openPopup('Var Capacidades')"><h4>Capacidades</h4><p>Producción, almacenamiento, transporte y recursos humanos.</p></div>
+                    <div class="card" onclick="openPopup('Var Restricciones')"><h4>Restricciones</h4><p>Presupuesto, espacio físico, normativas y disponibilidad.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Paso 2')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e8f4f8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#b8d9e8;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg2)"/>
+                        <circle cx="210" cy="170" r="40" fill="#003366"/>
+                        <text x="210" y="165" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Variables</text>
+                        <text x="210" y="180" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Clave</text>
+                        <circle cx="100" cy="80" r="35" fill="#e17055" opacity="0.9"/>
+                        <text x="100" y="85" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Costos</text>
+                        <circle cx="320" cy="80" r="35" fill="#fdcb6e" opacity="0.9"/>
+                        <text x="320" y="85" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Demanda</text>
+                        <circle cx="100" cy="260" r="35" fill="#00b894" opacity="0.9"/>
+                        <text x="100" y="265" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Capacidad</text>
+                        <circle cx="320" cy="260" r="35" fill="#0066cc" opacity="0.9"/>
+                        <text x="320" y="265" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Restricciones</text>
+                        <line x1="180" y1="145" x2="125" y2="105" stroke="#003366" stroke-width="2"/>
+                        <line x1="240" y1="145" x2="295" y2="105" stroke="#003366" stroke-width="2"/>
+                        <line x1="180" y1="195" x2="125" y2="235" stroke="#003366" stroke-width="2"/>
+                        <line x1="240" y1="195" x2="295" y2="235" stroke="#003366" stroke-width="2"/>
+                        <text x="210" y="30" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">Red de variables interconectadas</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 3. Red de variables interconectadas</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 3 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Video 2 - Contenido (LOCAL) -->
+    <div class="slide" id="slide-9">
+        <h2>Video Interactivo 2</h2>
+        <div class="info"><h4>Contenido del Video</h4><p>En el siguiente video conocerás el flujo práctico completo para resolver problemas de administración de operaciones usando IA generativa, desde el diseño del prompt hasta la validación de resultados.</p></div>
+        <div class="video-box">
+            <div class="video-info">
+                <div class="icon">🎬</div>
+                <p class="title">Flujo práctico de IA generativa para operaciones</p>
+            </div>
+            <div class="native-video">
+                <video controls preload="metadata" playsinline>
+                    <source src="Video 2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Paso 3 -->
+    <div class="slide" id="slide-10">
+        <h2>Paso 3: Diseñar un Prompt Efectivo</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>El prompt es la instrucción que le das a la IA. Un prompt efectivo debe tener cuatro características fundamentales:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Prompt Específico')"><h4>Específico</h4><p>Evita ambigüedades. Describe exactamente lo que necesitas.</p></div>
+                    <div class="card" onclick="openPopup('Prompt Estructurado')"><h4>Estructurado</h4><p>Organiza en secciones: Contexto, Datos, Restricciones y Salida.</p></div>
+                    <div class="card" onclick="openPopup('Prompt Completo')"><h4>Completo</h4><p>Incluye todas las variables relevantes y restricciones importantes.</p></div>
+                    <div class="card" onclick="openPopup('Prompt Explícito')"><h4>Explícito</h4><p>Indica el formato de salida: código Python, tabla, explicación, etc.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Paso 3')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff0f5;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ffe0ec;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg3)"/>
+                        <rect x="110" y="40" width="200" height="260" rx="8" fill="#fff" stroke="#003366" stroke-width="2"/>
+                        <rect x="110" y="40" width="200" height="35" rx="8" fill="#003366"/>
+                        <text x="210" y="62" font-size="13" fill="#fff" text-anchor="middle" font-weight="bold">PROMPT</text>
+                        <rect x="130" y="90" width="160" height="35" rx="5" fill="#e17055" opacity="0.85"/>
+                        <text x="210" y="112" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Específico</text>
+                        <rect x="130" y="135" width="160" height="35" rx="5" fill="#fdcb6e" opacity="0.85"/>
+                        <text x="210" y="157" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Estructurado</text>
+                        <rect x="130" y="180" width="160" height="35" rx="5" fill="#00b894" opacity="0.85"/>
+                        <text x="210" y="202" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Completo</text>
+                        <rect x="130" y="225" width="160" height="35" rx="5" fill="#0066cc" opacity="0.85"/>
+                        <text x="210" y="247" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Explícito</text>
+                        <text x="330" y="60" font-size="28">✨</text>
+                        <text x="330" y="90" font-size="10" fill="#003366" text-anchor="middle" font-weight="bold">Calidad</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 4. Anatomía de un prompt efectivo</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 4 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Ejemplo Prompt -->
+    <div class="slide" id="slide-11">
+        <h2>Ejemplo: Prompt para Cálculo de EOQ</h2>
+        <div class="case" style="background: #f8f9fa; border-left-color: #0066cc;">
+            <h4 style="color: #003366;">Ejemplo de Prompt Efectivo</h4>
+            <p style="color: #333;">"Actúa como un experto en administración de operaciones. Calcula la Cantidad Económica de Pedido (EOQ) y el Punto de Reorden para un producto con: Demanda anual: 6,000 unidades. Costo de realizar un pedido: $75. Costo de mantenimiento: $3 por unidad al año. Tiempo de entrega: 10 días. Días hábiles: 300. Genera código Python ejecutable en Google Colab que calcule EOQ, punto de reorden, y costo total anual. Incluye comentarios explicativos y muestra los resultados en una tabla clara."</p>
+        </div>
+        <div class="btn-list">
+            <button class="btn-act" onclick="openPopup('Analizar Prompt')">Analizar por qué este prompt es efectivo</button>
+        </div>
+    </div>
+
+    <!-- Slide 12: Paso 4 -->
+    <div class="slide" id="slide-12">
+        <h2>Paso 4: Generar el Código</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>Una vez que envías el prompt, la IA generativa producirá código ejecutable. Tienes dos opciones principales:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Codigo Python')"><h4>Código Python (Google Colab)</h4><p>Ideal para análisis complejos, simulaciones y optimización. Requiere cuenta de Google.</p></div>
+                    <div class="card" onclick="openPopup('Calculadora HTML')"><h4>Calculadora HTML</h4><p>Interfaz visual con sliders. Fácil de usar y compartir. Funciona en cualquier navegador.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Paso 4')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f0f8e8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#d4e8c3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg4)"/>
+                        <circle cx="210" cy="90" r="45" fill="#003366"/>
+                        <text x="210" y="85" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">IA</text>
+                        <text x="210" y="100" font-size="10" fill="#fff" text-anchor="middle">Generativa</text>
+                        <path d="M 175 125 Q 120 180 100 220" stroke="#0066cc" stroke-width="3" fill="none" marker-end="url(#arrP)"/>
+                        <path d="M 245 125 Q 300 180 320 220" stroke="#e17055" stroke-width="3" fill="none" marker-end="url(#arrH)"/>
+                        <defs>
+                            <marker id="arrP" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0066cc"/></marker>
+                            <marker id="arrH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e17055"/></marker>
+                        </defs>
+                        <rect x="40" y="225" width="150" height="90" rx="10" fill="#0066cc"/>
+                        <text x="115" y="250" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">Python</text>
+                        <text x="115" y="270" font-size="10" fill="#fff" text-anchor="middle">Google Colab</text>
+                        <text x="115" y="285" font-size="9" fill="#fff" text-anchor="middle">Análisis avanzado</text>
+                        <text x="115" y="300" font-size="9" fill="#fff" text-anchor="middle">Simulaciones</text>
+                        <rect x="230" y="225" width="150" height="90" rx="10" fill="#e17055"/>
+                        <text x="305" y="250" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">HTML</text>
+                        <text x="305" y="270" font-size="10" fill="#fff" text-anchor="middle">Calculadora</text>
+                        <text x="305" y="285" font-size="9" fill="#fff" text-anchor="middle">Visual + Sliders</text>
+                        <text x="305" y="300" font-size="9" fill="#fff" text-anchor="middle">Compartir fácil</text>
+                        <text x="210" y="30" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">Dos caminos de salida</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 5. Dos caminos de salida</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 5 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Paso 5 -->
+    <div class="slide" id="slide-13">
+        <h2>Paso 5: Analizar Escenarios y Validar</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>El poder de la IA generativa en operaciones está en el análisis de escenarios y la curación humana de resultados.</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Modificar Parámetros')"><h4>Modificar parámetros</h4><p>Cambia los valores de las variables y ejecuta nuevamente para ver el impacto.</p></div>
+                    <div class="card" onclick="openPopup('Comparar Escenarios')"><h4>Comparar escenarios</h4><p>Ejecuta con diferentes valores y compara resultados en una tabla.</p></div>
+                    <div class="card" onclick="openPopup('Validar Juicio')"><h4>Validar con juicio profesional</h4><p>La IA propone; tú decides. Ajusta a restricciones reales del negocio.</p></div>
+                    <div class="card" onclick="openPopup('Comunicar Solución')"><h4>Comunicar la solución</h4><p>Usa las visualizaciones generadas para presentar y justificar la decisión.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Paso 5')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e8f0ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c3d4f0;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg5)"/>
+                        <polygon points="60,60 360,60 280,180 140,180" fill="#0066cc" opacity="0.3"/>
+                        <polygon points="140,180 280,180 250,240 170,240" fill="#0066cc" opacity="0.5"/>
+                        <polygon points="170,240 250,240 230,280 190,280" fill="#0066cc" opacity="0.8"/>
+                        <circle cx="100" cy="50" r="6" fill="#e17055"/>
+                        <circle cx="160" cy="45" r="6" fill="#fdcb6e"/>
+                        <circle cx="220" cy="50" r="6" fill="#00b894"/>
+                        <circle cx="280" cy="45" r="6" fill="#003366"/>
+                        <circle cx="330" cy="50" r="6" fill="#8e44ad"/>
+                        <text x="210" y="100" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Escenarios</text>
+                        <text x="210" y="130" font-size="10" fill="#fff" text-anchor="middle">Análisis</text>
+                        <text x="210" y="160" font-size="10" fill="#fff" text-anchor="middle">Comparación</text>
+                        <text x="210" y="210" font-size="10" fill="#fff" text-anchor="middle">Validación</text>
+                        <text x="210" y="260" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">Juicio</text>
+                        <rect x="170" y="290" width="80" height="35" rx="8" fill="#00b894"/>
+                        <text x="210" y="312" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">Decisión</text>
+                        <line x1="210" y1="280" x2="210" y2="290" stroke="#003366" stroke-width="2"/>
+                        <text x="210" y="30" font-size="13" fill="#003366" text-anchor="middle" font-weight="bold">Embudo de validación</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 6. Embudo de validación</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 6 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Retos -->
+    <div class="slide" id="slide-14">
+        <h2>Retos de la IA Generativa en Operaciones</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>Aunque la IA generativa es una herramienta poderosa, su implementación presenta desafíos que debes gestionar:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Reto Alucinaciones')"><h4>Alucinaciones de la IA</h4><p>Resultados incorrectos pero convincentes. Siempre valida manualmente.</p></div>
+                    <div class="card" onclick="openPopup('Reto Sesgos')"><h4>Sesgos en los datos</h4><p>Datos históricos sesgados generan recomendaciones sesgadas.</p></div>
+                    <div class="card" onclick="openPopup('Reto Dependencia')"><h4>Dependencia tecnológica</h4><p>No dependas exclusivamente de la IA. Mantén tu criterio analítico.</p></div>
+                    <div class="card" onclick="openPopup('Reto Seguridad')"><h4>Seguridad de datos</h4><p>No compartas información confidencial en modelos públicos.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Retos')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff5f0;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ffd4c3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg6)"/>
+                        <path d="M 30 300 L 100 180 L 160 230 L 220 120 L 280 190 L 340 90 L 400 150" stroke="#8e44ad" stroke-width="3" fill="none"/>
+                        <polygon points="90,180 100,180 95,165" fill="#e17055"/>
+                        <text x="95" y="155" font-size="10" fill="#003366" text-anchor="middle" font-weight="bold">Alucinaciones</text>
+                        <polygon points="210,120 220,120 215,105" fill="#e17055"/>
+                        <text x="215" y="95" font-size="10" fill="#003366" text-anchor="middle" font-weight="bold">Sesgos</text>
+                        <polygon points="330,90 340,90 335,75" fill="#e17055"/>
+                        <text x="335" y="65" font-size="10" fill="#003366" text-anchor="middle" font-weight="bold">Seguridad</text>
+                        <circle cx="160" cy="218" r="8" fill="#003366"/>
+                        <line x1="160" y1="226" x2="160" y2="245" stroke="#003366" stroke-width="3"/>
+                        <line x1="160" y1="235" x2="152" y2="250" stroke="#003366" stroke-width="3"/>
+                        <line x1="160" y1="235" x2="168" y2="250" stroke="#003366" stroke-width="3"/>
+                        <line x1="400" y1="150" x2="400" y2="120" stroke="#003366" stroke-width="2"/>
+                        <polygon points="400,120 420,125 400,130" fill="#00b894"/>
+                        <text x="400" y="110" font-size="9" fill="#003366" text-anchor="middle" font-weight="bold">Éxito</text>
+                        <text x="210" y="30" font-size="13" fill="#003366" text-anchor="middle" font-weight="bold">El camino hacia el éxito</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 7. El camino hacia el éxito</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 7 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Ética -->
+    <div class="slide" id="slide-15">
+        <h2>Gobernanza y Ética en el Uso de IA</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>El uso responsable de IA generativa requiere principios éticos claros:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Etica Transparencia')"><h4>Transparencia</h4><p>Documenta el prompt, los datos y las validaciones realizadas.</p></div>
+                    <div class="card" onclick="openPopup('Etica Responsabilidad')"><h4>Responsabilidad humana</h4><p>La responsabilidad final de las decisiones siempre es humana.</p></div>
+                    <div class="card" onclick="openPopup('Etica Equidad')"><h4>Equidad</h4><p>Asegura que las decisiones no discriminen a proveedores o clientes.</p></div>
+                    <div class="card" onclick="openPopup('Etica Privacidad')"><h4>Privacidad</h4><p>Protege la información confidencial y usa modelos empresariales.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Ética')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f0e8ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#d4c3f0;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg7)"/>
+                        <circle cx="210" cy="170" r="100" fill="#fff" stroke="#003366" stroke-width="3"/>
+                        <circle cx="210" cy="170" r="90" fill="#f0f7ff"/>
+                        <text x="210" y="85" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">T</text>
+                        <text x="305" y="175" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">R</text>
+                        <text x="210" y="265" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">E</text>
+                        <text x="115" y="175" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">P</text>
+                        <polygon points="210,170 205,100 215,100" fill="#e17055"/>
+                        <polygon points="210,170 205,240 215,240" fill="#0066cc"/>
+                        <circle cx="210" cy="170" r="8" fill="#003366"/>
+                        <text x="210" y="70" font-size="9" fill="#003366" text-anchor="middle">Transparencia</text>
+                        <text x="325" y="175" font-size="9" fill="#003366" text-anchor="start">Responsabilidad</text>
+                        <text x="210" y="290" font-size="9" fill="#003366" text-anchor="middle">Equidad</text>
+                        <text x="95" y="175" font-size="9" fill="#003366" text-anchor="end">Privacidad</text>
+                        <text x="210" y="30" font-size="13" fill="#003366" text-anchor="middle" font-weight="bold">Brújula ética</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 8. Brújula ética</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 8 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: Casos -->
+    <div class="slide" id="slide-16">
+        <h2>Casos Prácticos de Aplicación</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>Ejemplos de cómo el flujo "Del Prompt a la Decisión" se aplica en diferentes contextos:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Caso Inventarios')"><h4>Optimización de inventarios</h4><p>Reducción de 25% en costos manteniendo nivel de servicio.</p></div>
+                    <div class="card" onclick="openPopup('Caso Pronóstico')"><h4>Pronóstico de demanda</h4><p>Mejora de 30% en precisión vs. método anterior.</p></div>
+                    <div class="card" onclick="openPopup('Caso Rutas')"><h4>Optimización de rutas</h4><p>Reducción de 18% en kilómetros y 15% en combustible.</p></div>
+                    <div class="card" onclick="openPopup('Caso Calidad')"><h4>Control de calidad</h4><p>Reducción de defectos del 4% al 1.5% identificando variables críticas.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Casos')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg8" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff9e6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ffe8a3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg8)"/>
+                        <path d="M 180 80 L 240 80 L 240 140 Q 240 170 210 180 Q 180 170 180 140 Z" fill="#fdcb6e" stroke="#d4a017" stroke-width="2"/>
+                        <rect x="200" y="180" width="20" height="30" fill="#d4a017"/>
+                        <rect x="180" y="210" width="60" height="10" fill="#d4a017"/>
+                        <path d="M 180 95 Q 160 95 160 115 Q 160 135 180 135" stroke="#d4a017" stroke-width="3" fill="none"/>
+                        <path d="M 240 95 Q 260 95 260 115 Q 260 135 240 135" stroke="#d4a017" stroke-width="3" fill="none"/>
+                        <polygon points="210,105 215,118 228,118 218,126 222,138 210,130 198,138 202,126 192,118 205,118" fill="#fff"/>
+                        <rect x="50" y="250" width="70" height="25" rx="5" fill="#00b894"/>
+                        <text x="85" y="267" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">-25% Costos</text>
+                        <rect x="135" y="250" width="70" height="25" rx="5" fill="#0066cc"/>
+                        <text x="170" y="267" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">+30% Precisión</text>
+                        <rect x="220" y="250" width="70" height="25" rx="5" fill="#e17055"/>
+                        <text x="255" y="267" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">-18% km</text>
+                        <rect x="305" y="250" width="70" height="25" rx="5" fill="#8e44ad"/>
+                        <text x="340" y="267" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">1.5% Defectos</text>
+                        <text x="210" y="40" font-size="13" fill="#003366" text-anchor="middle" font-weight="bold">Casos de éxito documentados</text>
+                        <text x="210" y="310" font-size="11" fill="#003366" text-anchor="middle" font-weight="bold">Resultados reales en operaciones</text>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 9. Casos de éxito documentados</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 9 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 17: Recursos -->
+    <div class="slide" id="slide-17">
+        <h2>Recursos y Herramientas Recomendadas</h2>
+        <div class="split-layout">
+            <div class="split-left">
+                <p>Herramientas gratuitas o de bajo costo para implementar el flujo en tu organización:</p>
+                <div class="grid">
+                    <div class="card" onclick="openPopup('Rec Colab')"><h4>Google Colab</h4><p>Entorno gratuito para ejecutar código Python en la nube.</p></div>
+                    <div class="card" onclick="openPopup('Rec Modelos')"><h4>ChatGPT / Claude / Gemini</h4><p>Modelos de IA generativa para crear prompts y generar código.</p></div>
+                    <div class="card" onclick="openPopup('Rec Librerias')"><h4>Librerías Python</h4><p>Pandas, NumPy, Matplotlib, PuLP, SciPy, Prophet.</p></div>
+                    <div class="card" onclick="openPopup('Rec HTML')"><h4>Calculadoras HTML</h4><p>Interactivas con sliders, sin instalación, fáciles de compartir.</p></div>
+                </div>
+            </div>
+            <div class="split-right">
+                <div class="creative-image" onclick="openPopup('Imagen Recursos')">
+                    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bg9" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e8f8f0;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c3e8d4;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="boxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#6c3483;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="420" height="340" fill="url(#bg9)"/>
+                        <rect x="70" y="120" width="280" height="160" rx="12" fill="url(#boxGrad)" stroke="#5b2d6e" stroke-width="2"/>
+                        <rect x="70" y="120" width="280" height="45" rx="12" fill="#6c3483" stroke="#5b2d6e" stroke-width="2"/>
+                        <rect x="70" y="145" width="280" height="12" fill="#6c3483"/>
+                        <rect x="170" y="100" width="80" height="25" rx="5" fill="#6c3483" stroke="#5b2d6e" stroke-width="1"/>
+                        <text x="210" y="117" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">HERRAMIENTAS</text>
+                        <circle cx="130" cy="215" r="28" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                        <text x="130" y="222" font-size="24" text-anchor="middle">☁️</text>
+                        <text x="130" y="258" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">Colab</text>
+                        <circle cx="210" cy="215" r="28" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                        <text x="210" y="222" font-size="24" text-anchor="middle">🤖</text>
+                        <text x="210" y="258" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">LLMs</text>
+                        <circle cx="290" cy="215" r="28" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                        <text x="290" y="222" font-size="24" text-anchor="middle">📚</text>
+                        <text x="290" y="258" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">Librerías</text>
+                        <circle cx="55" cy="80" r="22" fill="#0066cc" opacity="0.85"/>
+                        <text x="55" y="87" font-size="20" text-anchor="middle">🐍</text>
+                        <text x="55" y="112" font-size="8" fill="#003366" text-anchor="middle" font-weight="bold">Python</text>
+                        <circle cx="365" cy="80" r="22" fill="#e17055" opacity="0.85"/>
+                        <text x="365" y="87" font-size="20" text-anchor="middle">🌐</text>
+                        <text x="365" y="112" font-size="8" fill="#003366" text-anchor="middle" font-weight="bold">HTML</text>
+                        <text x="210" y="45" font-size="14" fill="#003366" text-anchor="middle" font-weight="bold">Caja de herramientas digital</text>
+                        <line x1="77" y1="215" x2="102" y2="215" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                        <line x1="158" y1="215" x2="182" y2="215" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                        <line x1="238" y1="215" x2="262" y2="215" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                        <line x1="318" y1="215" x2="343" y2="215" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                    </svg>
+                    <div class="click-hint">Clic para explorar</div>
+                </div>
+                <div class="figure-caption">Figura 10. Caja de herramientas digital</div>
+                <div class="figure-source">Fuente: imagen generada con IA</div>
+                <button class="alt-btn" onclick="openPopup('Figura 10 Alt')">Texto alternativo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Actividad de Aprendizaje -->
+    <div class="slide" id="slide-18">
+        <h2>Actividad de Aprendizaje</h2>
+        <div class="info"><h4>Instrucciones</h4><p>¡Es momento de aplicar lo aprendido! Lee con atención el caso de estudio y responde las <strong>10 preguntas</strong> de análisis.</p></div>
+        <div class="case">
+            <h4>Caso de Estudio: TechParts S.A.</h4>
+            <p><strong>Contexto:</strong> Fabricante de componentes electrónicos con planta en Bogotá y distribución en Colombia, Ecuador y Perú.</p>
+            <p><strong>Desafíos actuales:</strong></p>
+            <ul>
+                <li>Costos de inventario aumentaron 40% (stock excesivo y quiebres).</li>
+                <li>Error del 35% en el pronóstico de demanda.</li>
+                <li>Costos de transporte representan el 25% del costo total.</li>
+                <li>Tasa de defectos en producción del 5% (estándar: 2%).</li>
+                <li>Inversión aprobada para implementar IA generativa.</li>
+            </ul>
+        </div>
+        <div class="btn-list">
+            <button class="btn-act" onclick="openLearningQuestion(1)">Pregunta 1: Primer paso del flujo</button>
+            <button class="btn-act" onclick="openLearningQuestion(2)">Pregunta 2: Variables para pronóstico</button>
+            <button class="btn-act" onclick="openLearningQuestion(3)">Pregunta 3: Prompt para rutas</button>
+            <button class="btn-act" onclick="openLearningQuestion(4)">Pregunta 4: Validación de resultados decimales</button>
+            <button class="btn-act" onclick="openLearningQuestion(5)">Pregunta 5: Herramienta interactiva para compras</button>
+            <button class="btn-act" onclick="openLearningQuestion(6)">Pregunta 6: Análisis de escenarios</button>
+            <button class="btn-act" onclick="openLearningQuestion(7)">Pregunta 7: Análisis de tasa de defectos</button>
+            <button class="btn-act" onclick="openLearningQuestion(8)">Pregunta 8: Riesgo ético y de gobernanza</button>
+            <button class="btn-act" onclick="openLearningQuestion(9)">Pregunta 9: KPI de éxito del proyecto</button>
+            <button class="btn-act" onclick="openLearningQuestion(10)">Pregunta 10: Escalamiento a otras áreas</button>
+        </div>
+    </div>
+
+    <!-- Slide 19: Conclusiones -->
+    <div class="slide" id="slide-19">
+        <h2>Conclusiones</h2>
+        <p style="font-style: italic; color: #666; margin-bottom: 20px;">Al finalizar este recurso, reflexionemos sobre los siguientes puntos clave:</p>
+        <div class="conclusion"><h4>1. Flujo Estructurado</h4><p>El flujo "Del Prompt a la Decisión" proporciona un marco replicable para resolver cualquier desafío operativo con IA generativa.</p></div>
+        <div class="conclusion"><h4>2. Prompt Engineering</h4><p>La calidad del prompt determina la calidad de la respuesta. Prompts específicos y estructurados generan código más preciso.</p></div>
+        <div class="conclusion"><h4>3. Validación Humana</h4><p>La IA propone; el humano decide. El juicio profesional es insustituible para validar resultados y ajustar a restricciones reales.</p></div>
+        <div class="conclusion"><h4>4. Análisis de Escenarios</h4><p>Modificar parámetros y analizar escenarios permite tomar decisiones informadas y planificar contingencias.</p></div>
+        <div class="conclusion"><h4>5. Ética y Gobernanza</h4><p>El uso responsable requiere transparencia, responsabilidad humana y protección de datos confidenciales.</p></div>
+    </div>
+
+    <!-- Slide 20: Bibliografía -->
+    <div class="slide" id="slide-20">
+        <h2>Bibliografía</h2>
+        <div class="biblio">Chopra, S., & Meindl, P. (2022). <em>Supply chain management: Strategy, planning, and operation</em> (7th ed.). Pearson.</div>
+        <div class="biblio">Davenport, T. H., & Ronanki, R. (2018). Artificial intelligence for the real world. <em>Harvard Business Review</em>, <em>96</em>(1), 108-116.</div>
+        <div class="biblio">Heizer, J., Render, B., & Munson, C. (2020). <em>Operations management: Sustainability and supply chain management</em> (13th ed.). Pearson.</div>
+        <div class="biblio">Marr, B. (2021). <em>AI 2041: Ten visions for our future</em>. Currency.</div>
+        <div class="biblio">Russell, S., & Norvig, P. (2021). <em>Artificial intelligence: A modern approach</em> (4th ed.). Pearson.</div>
+    </div>
+
+    <!-- Slide 21: Créditos -->
+    <div class="slide" id="slide-21">
+        <h2>Créditos</h2>
+        <div class="credits">
+            <p><strong>Universidad Nacional Abierta y a Distancia – UNAD</strong></p>
+            <p><strong>Vicerrectoría de Medios y Mediaciones Pedagógicas – VIMEP</strong></p>
+            <p>Red de Gestión Tecnopedagógica de Cursos y Recursos Educativos Digitales</p>
+            <br>
+            <p><strong>Escuela de Ciencias Administrativas, Contables, Económicas y de Negocios – ECACEN</strong></p>
+            <br>
+            <p><strong>Docente:</strong> Julio Cesar Montoya Rendón</p>
+            <p><strong>Año:</strong> 2026</p>
+            <br>
+            <p style="font-size: 12px; opacity: 0.9;">Esta obra está protegida por derecho de autor bajo la titularidad de la UNAD. Cualquier reproducción o copia sin autorización constituye un delito conforme la legislación nacional.</p>
+        </div>
+    </div>
+
+    <!-- Slide 22: Resultados -->
+    <div class="slide" id="slide-22">
+        <h2>Resultados</h2>
+        
+        <!-- PANEL DE RESULTADOS -->
+        <div class="results-panel">
+            <h3>Resultados de las Actividades</h3>
+            
+            <div class="result-item">
+                <span class="label">Presaberes (5 preguntas)</span>
+                <span class="score" id="preResults">0 / 5</span>
+            </div>
+            <div class="result-item">
+                <span class="label">Aprendizaje (10 preguntas)</span>
+                <span class="score" id="learnResults">0 / 10</span>
+            </div>
+            
+            <div class="result-summary">
+                <div class="stat">
+                    <div class="number" id="totalCorrect">0</div>
+                    <div class="desc">Respuestas correctas</div>
+                </div>
+                <div class="stat">
+                    <div class="number" id="totalIncorrect">0</div>
+                    <div class="desc">Respuestas incorrectas</div>
+                </div>
+                <div class="stat">
+                    <div class="number blue" id="totalPercent">0%</div>
+                    <div class="desc">Porcentaje de acierto</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 13px; color: #666; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">
+                <span id="resultMessage">Completa las actividades para ver tus resultados aquí.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button class="nav-btn tts-btn" id="ttsBtn" onclick="toggleSpeech()" title="Leer en voz alta">🔊 Leer</button>
+        <span class="counter" id="slideCounter">Diapositiva 1 de 22</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+</div>
+
+<!-- Popups -->
+<div class="overlay" id="popupOverlay" onclick="closePopupOnOverlay(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="popupTitle">Título</h3>
+            <button class="close-btn" onclick="closePopup()">×</button>
+        </div>
+        <div class="modal-body" id="popupBody">Contenido...</div>
+        <div style="padding: 0 25px 25px 25px;">
+            <div class="tts-controls">
+                <button class="tts-ctrl-btn" onclick="readPopupContent()">🔊 Leer contenido</button>
+                <button class="tts-ctrl-btn" onclick="stopSpeech()">⏹ Detener</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Popup (ya no se usa, pero se mantiene por compatibilidad) -->
+<div class="overlay" id="videoPopupOverlay" onclick="closeVideoPopupOnOverlay(event)">
+    <div class="modal video-modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="videoPopupTitle">🎬 Reproduciendo video</h3>
+            <button class="close-btn" onclick="closeVideoPopup()">×</button>
+        </div>
+        <div class="modal-body" id="videoPopupBody">
+            <div style="padding:20px;text-align:center;color:#666;">
+                Cargando video...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback -->
+<div class="feedback" id="feedbackPopup">
+    <div class="fb-header" id="feedbackHeader"><span id="feedbackIcon"></span><span id="feedbackTitle"></span></div>
+    <div id="feedbackText" style="line-height: 1.6; color: #333;"></div>
+    <button class="fb-close" onclick="closeFeedback()">Cerrar</button>
+</div>
+
+<script>
+let currentSlide = 1;
+const totalSlides = 22;
+let currentQuestionData = null;
+
+// --- CONTADORES DE RESULTADOS ---
+let preCorrect = 0;
+let preTotal = 5;
+let learnCorrect = 0;
+let learnTotal = 10;
+let answeredPre = {};
+let answeredLearn = {};
+
+// --- TEXT TO SPEECH (TTS) CONFIGURATION ---
+let isSpeaking = false;
+let selectedVoice = null;
+let utterance = null;
+
+// --- TEXTO EXACTO POR DIAPOSITIVA (solo para casos especiales que no se capturan bien) ---
+const slideTexts = {
+    'slide-1': 'IA en Administración de Operaciones: Del Prompt a la Decisión',
+    'slide-4': 'Video de Presentación del Recurso. Instrucciones. En el siguiente video se proporcionará una visión general del contenido del recurso educativo, destacando cómo la IA generativa puede convertirse en su aliada estratégica para resolver problemas operativos complejos. IA en Administración de Operaciones: Del Prompt a la Decisión',
+    'slide-9': 'Video Interactivo 2. Contenido del Video. En el siguiente video conocerás el flujo práctico completo para resolver problemas de administración de operaciones usando IA generativa, desde el diseño del prompt hasta la validación de resultados. Flujo práctico de IA generativa para operaciones',
+    'slide-21': 'Créditos. Universidad Nacional Abierta y a Distancia – UNAD. Vicerrectoría de Medios y Mediaciones Pedagógicas – VIMEP. Red de Gestión Tecnopedagógica de Cursos y Recursos Educativos Digitales. Escuela de Ciencias Administrativas, Contables, Económicas y de Negocios – ECACEN. Docente: Julio Cesar Montoya Rendón. Año: 2026. Esta obra está protegida por derecho de autor bajo la titularidad de la UNAD. Cualquier reproducción o copia sin autorización constituye un delito conforme la legislación nacional.'
+};
+
+function getSlideText() {
+    const activeSlide = document.querySelector('.slide.active');
+    if (!activeSlide) return '';
+    
+    const slideId = activeSlide.id;
+    
+    // Si es una diapositiva con texto personalizado, usar ese texto
+    if (slideTexts[slideId]) {
+        return slideTexts[slideId];
+    }
+    
+    // Caso especial: diapositiva de resultados (slide-22)
+    if (slideId === 'slide-22') {
+        const preScore = document.getElementById('preResults').innerText;
+        const learnScore = document.getElementById('learnResults').innerText;
+        const totalCorrect = document.getElementById('totalCorrect').innerText;
+        const totalIncorrect = document.getElementById('totalIncorrect').innerText;
+        const totalPercent = document.getElementById('totalPercent').innerText;
+        const message = document.getElementById('resultMessage').innerText;
+        // Construir un texto completo y legible
+        return `Resultados. Presaberes: ${preScore}. Aprendizaje: ${learnScore}. Total de respuestas correctas: ${totalCorrect}. Incorrectas: ${totalIncorrect}. Porcentaje de acierto: ${totalPercent}. ${message}`;
+    }
+    
+    // Para el resto de diapositivas, extraer el texto del DOM sin eliminar contenedores de texto
+    let clone = activeSlide.cloneNode(true);
+    // Eliminar solo elementos que son puramente interactivos o visuales sin texto relevante
+    const elementosAEliminar = [
+        'button', '.btn-act', '.nav-btn', '.close-btn', '.fb-close', '.tts-ctrl-btn',
+        '.creative-image', '.alt-btn', '.native-video', '.video-buttons', '.video-btn', '.script-btn',
+        '.figure-caption', '.figure-source', '.click-hint',
+        '.nav-bar', '.tts-controls', '.results-panel .result-item', '.results-panel .result-summary',
+        '.results-panel .stat', '.result-item .score', '.stat .number', '.result-item .label',
+        '.stat .desc', '.results-panel h3', '.result-summary', '.result-item', '.stat',
+        '.results-panel', '.results-panel .result-item', '.results-panel .result-summary',
+        '.results-panel .stat', '.result-item .score', '.stat .number', '.result-item .label',
+        '.stat .desc', '.results-panel h3', '.result-summary', '.result-item', '.stat',
+        '.result-item .score', '.stat .number', '.result-item .label', '.stat .desc',
+        '.results-panel', '.results-panel .result-item', '.results-panel .result-summary',
+        '.results-panel .stat', '.result-item .score', '.stat .number', '.result-item .label',
+        '.stat .desc', '.results-panel h3', '.result-summary', '.result-item', '.stat',
+        '.result-item .score', '.stat .number', '.result-item .label', '.stat .desc'
+    ];
+    elementosAEliminar.push('.btn-list', '.btn-act');
+    
+    clone.querySelectorAll(elementosAEliminar.join(',')).forEach(el => el.remove());
+    
+    // También eliminar los elementos que contienen solo íconos o decoraciones
+    clone.querySelectorAll('.icon, .close-btn, .play-btn, .script-btn, .video-btn, .alt-btn, .creative-image, .click-hint').forEach(el => el.remove());
+    
+    let text = clone.innerText;
+    text = text.replace(/plaqueta/gi, '');
+    text = text.replace(/Tu navegador no soporta la reproducción de vídeo nativo/gi, '');
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    return text;
+}
+
+function getPopupText() {
+    const popupBody = document.getElementById('popupBody');
+    if (!popupBody) return '';
+    let clone = popupBody.cloneNode(true);
+    clone.querySelectorAll('button, .tts-controls, .option').forEach(el => el.remove());
+    let text = clone.innerText;
+    text = text.replace(/plaqueta/gi, '');
+    text = text.replace(/Tu navegador no soporta la reproducción de vídeo nativo/gi, '');
+    text = text.replace(/\s+/g, ' ').trim();
+    return text;
+}
+
+function loadVoices() {
+    const allVoices = speechSynthesis.getVoices();
+    if (allVoices.length === 0) return;
+    const preferredNames = ['Jorge', 'Diego', 'Carlos', 'Pablo', 'Raul', 'Juan', 'Male', 'Microsoft Pablo', 'Microsoft Raul', 'Microsoft Jorge', 'Microsoft Diego'];
+    for (let name of preferredNames) {
+        let voice = allVoices.find(v => v.lang.startsWith('es') && v.name.includes(name));
+        if (voice) { selectedVoice = voice; return; }
+    }
+    let esVoice = allVoices.find(v => v.lang.startsWith('es'));
+    if (esVoice) { selectedVoice = esVoice; return; }
+    selectedVoice = allVoices[0];
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function speakText(text) {
+    if (!text) return;
+    speechSynthesis.cancel();
+    utterance = new SpeechSynthesisUtterance(text);
+    if (selectedVoice) utterance.voice = selectedVoice;
+    utterance.lang = 'es-MX';
+    utterance.rate = 1.0; 
+    utterance.pitch = 1.0;
+    utterance.onend = () => {
+        isSpeaking = false;
+        document.getElementById('ttsBtn').innerText = '🔊 Leer';
+    };
+    utterance.onerror = () => {
+        isSpeaking = false;
+        document.getElementById('ttsBtn').innerText = '🔊 Leer';
+    };
+    speechSynthesis.speak(utterance);
+    isSpeaking = true;
+    document.getElementById('ttsBtn').innerText = '⏸️ Pausar';
+}
+
+function toggleSpeech() {
+    const btn = document.getElementById('ttsBtn');
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        isSpeaking = false;
+        btn.innerText = '▶️ Reanudar';
+    } else if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        isSpeaking = true;
+        btn.innerText = '⏸️ Pausar';
+    } else {
+        const popupOverlay = document.getElementById('popupOverlay');
+        if (popupOverlay.classList.contains('active')) {
+            const text = getPopupText();
+            speakText(text);
+        } else {
+            const text = getSlideText();
+            speakText(text);
+        }
+    }
+}
+
+function readPopupContent() {
+    const text = getPopupText();
+    speakText(text);
+}
+
+function stopSpeech() {
+    speechSynthesis.cancel();
+    isSpeaking = false;
+    document.getElementById('ttsBtn').innerText = '🔊 Leer';
+}
+
+// --- NAVIGATION LOGIC + PROGRESS BAR ---
+function updateProgress() {
+    const progress = ((currentSlide) / totalSlides) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+    document.getElementById('progressText').innerText = Math.round(progress) + '%';
+}
+
+function changeSlide(direction) {
+    stopSpeech();
+    document.getElementById('slide-' + currentSlide).classList.remove('active');
+    currentSlide += direction;
+    if (currentSlide < 1) currentSlide = 1;
+    if (currentSlide > totalSlides) currentSlide = totalSlides;
+    document.getElementById('slide-' + currentSlide).classList.add('active');
+    document.getElementById('prevBtn').disabled = (currentSlide === 1);
+    document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+    document.getElementById('slideCounter').innerText = 'Diapositiva ' + currentSlide + ' de ' + totalSlides;
+    updateProgress();
+    window.scrollTo(0, 0);
+    // Lectura automática para la portada (slide 1) y la diapositiva de resultados (slide 22)
+    if (currentSlide === 1 || currentSlide === 22) {
+        setTimeout(() => {
+            const text = getSlideText();
+            if (text) speakText(text);
+        }, 500);
+    }
+}
+
+// --- UPDATE RESULTS DISPLAY ---
+function updateResults() {
+    let totalCorrect = preCorrect + learnCorrect;
+    let totalAnswered = Object.keys(answeredPre).length + Object.keys(answeredLearn).length;
+    let totalQuestions = preTotal + learnTotal;
+    let percent = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+    
+    document.getElementById('preResults').innerText = preCorrect + ' / ' + preTotal;
+    document.getElementById('preResults').className = 'score' + (preCorrect === preTotal && preTotal > 0 ? ' pass' : '');
+    
+    document.getElementById('learnResults').innerText = learnCorrect + ' / ' + learnTotal;
+    document.getElementById('learnResults').className = 'score' + (learnCorrect === learnTotal && learnTotal > 0 ? ' pass' : '');
+    
+    document.getElementById('totalCorrect').innerText = totalCorrect;
+    document.getElementById('totalCorrect').className = 'number green';
+    
+    document.getElementById('totalIncorrect').innerText = totalAnswered - totalCorrect;
+    document.getElementById('totalIncorrect').className = 'number red';
+    
+    document.getElementById('totalPercent').innerText = percent + '%';
+    document.getElementById('totalPercent').className = 'number blue';
+    
+    let msg = document.getElementById('resultMessage');
+    if (totalAnswered === 0) {
+        msg.innerText = 'Completa las actividades para ver tus resultados aquí.';
+    } else if (percent >= 80) {
+        msg.innerText = '🎉 ¡Excelente desempeño! Has demostrado un dominio excepcional del contenido.';
+    } else if (percent >= 60) {
+        msg.innerText = '👍 Buen trabajo. Sigue practicando para alcanzar la excelencia.';
+    } else if (percent >= 40) {
+        msg.innerText = '📖 Revisa los conceptos clave y vuelve a intentar las actividades.';
+    } else {
+        msg.innerText = '💪 No te desanimes. Repasa el contenido y vuelve a intentarlo.';
+    }
+}
+
+// --- POPUP LOGIC ---
+function openPopup(title) {
+    stopSpeech();
+    document.getElementById('popupTitle').innerText = title;
+    document.getElementById('popupBody').innerHTML = popupContent[title] || 'Contenido no disponible';
+    document.getElementById('popupOverlay').classList.add('active');
+}
+function closePopup() { 
+    stopSpeech();
+    document.getElementById('popupOverlay').classList.remove('active'); 
+}
+function closePopupOnOverlay(e) { if (e.target === document.getElementById('popupOverlay')) closePopup(); }
+
+// --- VIDEO POPUP LOGIC (ya no se usa, pero se mantiene por compatibilidad) ---
+function openVideoPopup(videoUrl) {
+    document.getElementById('videoPopupOverlay').classList.add('active');
+    document.getElementById('videoPopupBody').innerHTML = '<div style="padding:20px;text-align:center;color:#666;">Los videos ahora se reproducen directamente en la diapositiva.</div>';
+}
+
+function closeVideoPopup() {
+    document.getElementById('videoPopupOverlay').classList.remove('active');
+}
+
+function closeVideoPopupOnOverlay(e) {
+    if (e.target === document.getElementById('videoPopupOverlay')) {
+        closeVideoPopup();
+    }
+}
+
+// Cerrar popups con tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        if (document.getElementById('videoPopupOverlay').classList.contains('active')) {
+            closeVideoPopup();
+        }
+        if (document.getElementById('popupOverlay').classList.contains('active')) {
+            closePopup();
+        }
+    }
+});
+
+// --- QUESTION LOGIC ---
+function openQuestion(num) { 
+    currentQuestionData = preKnowledgeQuestions[num]; 
+    showFeedbackPopup(false, num); 
+}
+function openLearningQuestion(num) { 
+    currentQuestionData = learningQuestions[num]; 
+    showFeedbackPopup(true, num); 
+}
+
+function showFeedbackPopup(isLearning, num) {
+    stopSpeech();
+    let optionsHtml = '';
+    const gridClass = Object.keys(currentQuestionData.options).length > 2 ? 'options-grid' : '';
+    for (let key in currentQuestionData.options) {
+        optionsHtml += '<div class="option" onclick="checkAnswer(\'' + key + '\', ' + isLearning + ', ' + num + ')"><strong>' + key.toUpperCase() + ')</strong> ' + currentQuestionData.options[key] + '</div>';
+    }
+    document.getElementById('popupTitle').innerText = isLearning ? 'Actividad de Aprendizaje' : 'Actividad de Presaberes';
+    document.getElementById('popupBody').innerHTML = '<div class="q-container"><div class="q-text">' + currentQuestionData.question + '</div><div class="options ' + gridClass + '">' + optionsHtml + '</div></div>';
+    document.getElementById('popupOverlay').classList.add('active');
+}
+
+function checkAnswer(selected, isLearning, num) {
+    if (!currentQuestionData) return;
+    
+    let key = (isLearning ? 'l' : 'p') + num;
+    if (isLearning && answeredLearn[key]) {
+        document.getElementById('feedbackPopup').className = 'feedback active';
+        document.getElementById('feedbackHeader').innerHTML = '⚠️ Ya respondiste esta pregunta';
+        document.getElementById('feedbackText').innerText = 'Ya has respondido esta pregunta. Tus resultados se mantienen.';
+        speakText('Ya has respondido esta pregunta. Tus resultados se mantienen.');
+        return;
+    }
+    if (!isLearning && answeredPre[key]) {
+        document.getElementById('feedbackPopup').className = 'feedback active';
+        document.getElementById('feedbackHeader').innerHTML = '⚠️ Ya respondiste esta pregunta';
+        document.getElementById('feedbackText').innerText = 'Ya has respondido esta pregunta. Tus resultados se mantienen.';
+        speakText('Ya has respondido esta pregunta. Tus resultados se mantienen.');
+        return;
+    }
+    
+    const isCorrect = selected === currentQuestionData.correct;
+    const feedbackText = currentQuestionData.feedback[selected];
+    
+    if (isLearning) {
+        answeredLearn[key] = isCorrect;
+        if (isCorrect) learnCorrect++;
+    } else {
+        answeredPre[key] = isCorrect;
+        if (isCorrect) preCorrect++;
+    }
+    
+    document.getElementById('feedbackPopup').className = 'feedback active ' + (isCorrect ? 'correct' : 'incorrect');
+    document.getElementById('feedbackHeader').innerHTML = (isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto');
+    document.getElementById('feedbackText').innerText = feedbackText;
+    const feedbackToRead = (isCorrect ? '¡Correcto! ' : 'Incorrecto. ') + feedbackText;
+    speakText(feedbackToRead);
+    
+    updateResults();
+}
+
+function closeFeedback() { 
+    stopSpeech();
+    document.getElementById('feedbackPopup').classList.remove('active'); 
+}
+
+// --- CONTENT DATA ---
+const popupContent = {
+    'Figura 1 Alt': 'Figura 1. Ruta al éxito. Ilustración de una diana con círculos concéntricos que representan las etapas del proceso: desde el problema hasta la decisión final. Una flecha recorre las etapas intermedias: categorizar, identificar variables y diseñar el prompt, apuntando hacia el centro que representa la decisión acertada. La imagen simboliza la ruta estructurada hacia el éxito en la toma de decisiones operativas.',
+    'Figura 2 Alt': 'Figura 2. Cuatro caminos posibles. Diagrama que muestra un punto de partida (el problema) del cual se ramifican cuatro caminos diferentes, cada uno en un color distintivo: inventarios (naranja), pronóstico (amarillo), logística (verde) y calidad (azul). La ilustración representa la importancia de identificar correctamente qué tipo de problema operativo enfrentamos antes de avanzar en el flujo.',
+    'Figura 3 Alt': 'Figura 3. Red de variables interconectadas. Red visual con un nodo central llamado "Variables Clave" conectado a cuatro círculos satélites: Costos, Demanda, Capacidad y Restricciones. Las líneas de conexión representan la interdependencia entre estas variables. Esta ilustración muestra cómo todas las variables deben considerarse en conjunto, no de forma aislada, al diseñar un prompt para IA.',
+    'Figura 4 Alt': 'Figura 4. Anatomía de un prompt efectivo. Representación de un documento estructurado tipo prompt, dividido en cuatro secciones horizontales de colores: específico (naranja), estructurado (amarillo), completo (verde) y explícito (azul). Un ícono de estrella en la esquina simboliza la calidad del prompt. La imagen transmite que un buen prompt es como un documento bien organizado con componentes claros.',
+    'Figura 5 Alt': 'Figura 5. Dos caminos de salida. Diagrama de bifurcación: desde un cerebro de IA generativa en la parte superior, salen dos caminos. El izquierdo lleva a un recuadro azul con Python/Google Colab (análisis avanzado y simulaciones). El derecho lleva a un recuadro naranja con HTML/Calculadora (interfaz visual y fácil de compartir). Muestra que la IA puede producir dos tipos de salidas según la necesidad del usuario.',
+    'Figura 6 Alt': 'Figura 6. Embudo de validación. Embudo o pirámide invertida que representa el proceso de refinamiento: en la parte ancha entran múltiples escenarios (puntos de colores); a medida que bajan pasan por etapas de análisis, comparación y validación; finalmente sale una única decisión refinada (círculo verde). La imagen simboliza cómo el juicio humano filtra y cura los resultados de la IA.',
+    'Figura 7 Alt': 'Figura 7. El camino hacia el éxito. Escena de montaña con un caminante (representando al profesional) que avanza por un sendero sinuoso con tres picos que representan obstáculos: alucinaciones, sesgos y seguridad. Al final del camino hay una bandera verde que simboliza el éxito. Transmite que superar estos desafíos es parte del camino hacia una implementación exitosa de IA.',
+    'Figura 8 Alt': 'Figura 8. Brújula ética. Brújula circular con cuatro puntos cardinales que representan los principios éticos: Transparencia (arriba), Responsabilidad (derecha), Equidad (abajo) y Privacidad (izquierda). Una aguja roja y azul en el centro indica la dirección correcta. La imagen comunica que estos cuatro principios guían el uso responsable de la IA, igual que una brújula guía al viajero.',
+    'Figura 9 Alt': 'Figura 9. Casos de éxito documentados. Trofeo dorado central con una estrella blanca, rodeado por cuatro barras de resultados en colores diferentes: reducción de 25% en costos (verde), mejora del 30% en precisión (azul), reducción del 18% en kilómetros (naranja) y defectos al 1.5% (morado). La imagen celebra los casos de éxito documentados al aplicar el flujo "Del Prompt a la Decisión".',
+    'Figura 10 Alt': 'Figura 10. Caja de herramientas digital. Caja de herramientas morada con tres compartimentos circulares que contienen íconos: una nube (Google Colab), un robot (modelos LLM como ChatGPT) y libros (librerías Python). Alrededor flotan íconos adicionales: una serpiente (Python) y un globo (HTML). Representa el conjunto completo de herramientas digitales necesarias para implementar el flujo.',
+    
+    'Contenido Paso1': '<strong>Paso 1: Categorizar el Problema Operativo</strong><br><br>El primer paso consiste en identificar correctamente qué tipo de problema operativo se está enfrentando. Las principales categorías son:<br><br>• <strong>Inventarios</strong> - Gestión de stock, EOQ, punto de reorden<br>• <strong>Pronóstico</strong> - Predicción de demanda, tendencias<br>• <strong>Logística</strong> - Rutas, distribución, transporte<br>• <strong>Calidad</strong> - Control estadístico, Six Sigma<br><br>Categorizar correctamente permite enfocar el análisis y diseñar un prompt preciso.',
+    'Contenido Paso2': '<strong>Paso 2: Identificar las Variables Clave</strong><br><br>Una vez categorizado el problema, es fundamental identificar las variables que serán los parámetros de entrada:<br><br>• <strong>Costos</strong> - Fijos, variables, de mantenimiento<br>• <strong>Demandas</strong> - Histórica, proyectada, estacionalidad<br>• <strong>Capacidades</strong> - Producción, almacenamiento<br>• <strong>Restricciones</strong> - Presupuesto, espacio, normativas<br><br>Estas variables deben incluirse en el prompt para que la IA genere soluciones aplicables.',
+    'Contenido Paso3': '<strong>Paso 3: Diseñar un Prompt Efectivo</strong><br><br>El prompt es la instrucción que le das a la IA. Debe ser:<br><br>• <strong>Específico</strong> - Describe exactamente lo que necesitas<br>• <strong>Estructurado</strong> - Organiza en secciones claras<br>• <strong>Completo</strong> - Incluye todas las variables y restricciones<br>• <strong>Explícito</strong> - Indica el formato de salida deseado<br><br>La calidad del prompt determina la calidad del resultado.',
+    'Contenido Paso4': '<strong>Paso 4: Generar el Código</strong><br><br>La IA generativa produce código ejecutable que puedes usar para:<br><br>• <strong>Python en Google Colab</strong> - Para análisis complejos, optimización y simulaciones<br>• <strong>Calculadora HTML</strong> - Interfaz visual con sliders, fácil de compartir<br><br>Elige la opción según la complejidad del problema y las necesidades de tu equipo.',
+    'Contenido Paso5': '<strong>Paso 5: Analizar Escenarios y Validar</strong><br><br>El valor real de la IA está en:<br><br>• <strong>Modificar parámetros</strong> - Explora diferentes escenarios<br>• <strong>Comparar resultados</strong> - Toma decisiones informadas<br>• <strong>Validar con juicio profesional</strong> - La IA propone, tú decides<br>• <strong>Comunicar soluciones</strong> - Usa visualizaciones para justificar<br><br>La validación humana es insustituible en la toma de decisiones operativas.',
+    
+    'Objetivo Imagen': '<strong>Más allá del objetivo</strong><br><br>Este recurso educativo no solo busca que aprendas a usar IA generativa, sino que desarrolles un <strong>nuevo mindset operativo</strong>. El flujo "Del Prompt a la Decisión" te permitirá:<br><br>• <strong>Automatizar análisis complejos</strong> sin programar<br>• <strong>Explorar escenarios</strong> que antes eran imposibles de calcular<br>• <strong>Tomar decisiones basadas en datos</strong> con validación humana<br>• <strong>Liderar la transformación digital</strong> en tu organización<br><br>El verdadero objetivo es convertirte en un gerente de operaciones que combina criterio humano con la potencia de la IA.',
+    'Imagen Paso 1': '<strong>¿Por qué categorizar primero?</strong><br><br>Cada tipo de problema operativo tiene su propia lógica matemática y requiere datos específicos:<br><br>• <strong>Inventarios</strong> usan modelos EOQ y punto de reorden<br>• <strong>Pronósticos</strong> emplean series de tiempo y suavización exponencial<br>• <strong>Logística</strong> aplica problemas de ruteo (VRP) y optimización de redes<br>• <strong>Calidad</strong> utiliza control estadístico y Six Sigma<br><br>Categorizar correctamente te ahorra tiempo y evita prompts confusos. Es el primer paso hacia la solución correcta.',
+    'Imagen Paso 2': '<strong>La interconexión importa</strong><br><br>Las variables no operan aisladamente. Por ejemplo:<br><br>• Un cambio en la <strong>demanda</strong> afecta los <strong>costos de inventario</strong><br>• Las <strong>restricciones de espacio</strong> limitan la <strong>capacidad de almacenamiento</strong><br>• Los <strong>costos de transporte</strong> influyen en las decisiones de <strong>aprovisionamiento</strong><br><br>Al alimentar la IA, considera cómo tus variables se afectan mutuamente. Esto producirá soluciones más realistas y aplicables.',
+    'Imagen Paso 3': '<strong>La calidad del prompt = Calidad del resultado</strong><br><br>Un estudio de McKinsey (2023) muestra que profesionales que estructuran prompts siguiendo estos cuatro principios obtienen:<br><br>• <strong>60% menos iteraciones</strong> para llegar al resultado deseado<br>• <strong>45% menos alucinaciones</strong> en las respuestas<br>• <strong>70% más precisión</strong> en cálculos numéricos<br><br>Diseñar prompts es una habilidad estratégica que diferencia a los gerentes de operaciones modernos.',
+    'Imagen Paso 4': '<strong>¿Cómo elegir entre Python y HTML?</strong><br><br>La decisión depende del propósito:<br><br><strong>Elige Python/Colab cuando:</strong><br>• Necesitas análisis estadístico complejo<br>• Trabajas con grandes volúmenes de datos<br>• Requieres visualizaciones avanzadas<br>• Harás optimización matemática<br><br><strong>Elige HTML cuando:</strong><br>• La herramienta la usarán personas no técnicas<br>• Necesitas una calculadora de uso recurrente<br>• Quieres compartir fácilmente con tu equipo<br>• Los cálculos son relativamente simples',
+    'Imagen Paso 5': '<strong>El embudo de la sabiduría operativa</strong><br><br>La IA puede generar decenas de escenarios en segundos, pero no todos son viables. El embudo de validación funciona así:<br><br>1. <strong>Escenarios:</strong> La IA produce múltiples opciones<br>2. <strong>Análisis:</strong> Comparas métricas y resultados<br>3. <strong>Validación:</strong> Aplicas tu conocimiento del negocio<br>4. <strong>Juicio:</strong> Consideras factores cualitativos<br>5. <strong>Decisión:</strong> Eliges con criterio profesional<br><br>Este embudo transforma datos en sabiduría operativa.',
+    'Imagen Retos': '<strong>Superar la montaña de desafíos</strong><br><br>Cada "pico" en el camino representa un reto real documentado:<br><br>• <strong>Alucinaciones (32% de casos):</strong> La IA inventa datos convincentes pero falsos<br>• <strong>Sesgos (28%):</strong> Heredan prejuicios de datos históricos<br>• <strong>Seguridad (15%):</strong> Fugas de información confidencial<br><br>La buena noticia: con las prácticas correctas (validación, auditoría, uso de modelos empresariales), estos riesgos se reducen hasta en un 85%.',
+    'Imagen Ética': '<strong>La brújula del gerente moderno</strong><br><br>En un mundo donde la IA toma cada vez más decisiones, los cuatro principios éticos son tu guía:<br><br>• <strong>Transparencia:</strong> ¿Puedo explicar cómo llegué a esta decisión?<br>• <strong>Responsabilidad:</strong> ¿Asumo la responsabilidad final del resultado?<br>• <strong>Equidad:</strong> ¿Esta decisión trata justamente a todos los stakeholders?<br>• <strong>Privacidad:</strong> ¿Protegí los datos confidenciales adecuadamente?<br><br>Si puedes responder "sí" a estas cuatro preguntas, estás usando la IA con integridad.',
+    'Imagen Casos': '<strong>Resultados que inspiran</strong><br><br>Los porcentajes mostrados corresponden a casos reales documentados:<br><br>• <strong>Empresa retail colombiana:</strong> Redujo costos de inventario 25% en 6 meses usando IA para EOQ dinámico<br>• <strong>Distribuidora de alimentos:</strong> Mejoró 30% la precisión de pronósticos con suavización exponencial adaptativa<br>• <strong>Transportadora regional:</strong> Optimizó rutas reduciendo 18% kilómetros recorridos con VRP<br>• <strong>Planta manufacturera:</strong> Identificó 3 variables críticas de calidad y redujo defectos del 4% al 1.5%<br><br>Estos resultados son alcanzables aplicando el flujo "Del Prompt a la Decisión" de forma consistente.',
+    'Imagen Recursos': '<strong>Tu arsenal digital</strong><br><br>Las herramientas mostradas son el stack tecnológico recomendado para gerentes de operaciones modernos:<br><br>• <strong>Google Colab:</strong> Tu laboratorio de análisis en la nube<br>• <strong>LLMs (ChatGPT/Claude/Gemini):</strong> Tu asistente de prompts y código<br>• <strong>Librerías Python:</strong> Pandas para datos, NumPy para cálculos, Matplotlib para gráficos, PuLP para optimización, Prophet para pronósticos<br>• <strong>Calculadoras HTML:</strong> Herramientas reutilizables para tu equipo<br><br>Con este arsenal puedes resolver el 90% de los desafíos operativos que enfrentes.',
+    
+    'Cat Inventarios': '<strong>Inventarios:</strong> Problemas relacionados con niveles de stock, punto de reorden, cantidad económica de pedido (EOQ), costos de almacenamiento y quiebre de stock.',
+    'Cat Pronóstico': '<strong>Pronóstico de demanda:</strong> Problemas de predicción de ventas, tendencias de mercado, estacionalidad, y análisis de series de tiempo.',
+    'Cat Transporte': '<strong>Transporte/Logística:</strong> Problemas de rutas de distribución, optimización de flotas, costos de envío, y tiempos de entrega.',
+    'Cat Calidad': '<strong>Calidad:</strong> Problemas de control de calidad, tasas de defectos, metodologías Six Sigma, y capacidad de procesos.',
+    'Var Costos': '<strong>Costos:</strong> Identifica costos fijos (alquiler, salarios base), variables (materiales, energía), de mantenimiento (almacenamiento, seguros), y de quiebre de stock (ventas perdidas).',
+    'Var Demandas': '<strong>Demandas:</strong> Recopila datos de demanda histórica (mensual, semanal), tendencias de crecimiento, estacionalidad, y factores externos que la afecten (clima, eventos).',
+    'Var Capacidades': '<strong>Capacidades:</strong> Define capacidades máximas de producción por período, capacidad de almacenamiento disponible, capacidad de transporte, y límites de recursos humanos.',
+    'Var Restricciones': '<strong>Restricciones:</strong> Lista restricciones presupuestales, de espacio físico, normativas legales, de calidad mínima requerida, y de disponibilidad de recursos.',
+    'Prompt Específico': '<strong>Específico:</strong> Evita ambigüedades. En lugar de "ayúdame con inventarios", usa: "Calcula el punto de reorden y la EOQ para un producto con demanda mensual de 500 unidades, costo de ordenar $50, y costo de mantenimiento $2 por unidad al mes."',
+    'Prompt Estructurado': '<strong>Estructurado:</strong> Organiza el prompt en secciones: Contexto (qué problema resuelves), Datos (valores de las variables), Restricciones (limitaciones), y Salida deseada (qué formato necesitas).',
+    'Prompt Completo': '<strong>Completo:</strong> Incluye todas las variables relevantes. Si olvidas mencionar una restricción importante (ej. capacidad máxima de almacén), la IA generará un código que no refleje tu realidad operativa.',
+    'Prompt Explícito': '<strong>Explícito:</strong> Indica claramente el formato: "Genera código Python ejecutable en Google Colab", o "Crea una calculadora HTML con sliders", o "Explica paso a paso la metodología usada".',
+    'Analizar Prompt': '<strong>¿Por qué este prompt es efectivo?</strong><br>1. <strong>Específico:</strong> Menciona exactamente qué calcular (EOQ y punto de reorden).<br>2. <strong>Datos completos:</strong> Incluye demanda, costos, tiempo de entrega y días hábiles.<br>3. <strong>Formato explícito:</strong> Solicita código Python para Google Colab.<br>4. <strong>Pedagogía:</strong> Pide comentarios explicativos en el código.<br>5. <strong>Presentación:</strong> Solicita resultados en una tabla clara.',
+    'Codigo Python': '<strong>Código Python (Google Colab):</strong><br>• <strong>Ventajas:</strong> Permite análisis complejos, simulaciones de Monte Carlo, optimización con librerías como PuLP o SciPy, visualizaciones avanzadas.<br>• <strong>Ideal para:</strong> problemas de optimización, pronósticos estadísticos, análisis de escenarios múltiples.<br>• <strong>Requiere:</strong> cuenta de Google (gratuita).',
+    'Calculadora HTML': '<strong>Calculadora HTML:</strong><br>• <strong>Ventajas:</strong> Interfaz visual con sliders y botones, fácil de usar por personas sin conocimientos técnicos, se puede compartir como archivo .html, funciona en cualquier navegador.<br>• <strong>Ideal para:</strong> herramientas de uso recurrente, calculadoras de EOQ, punto de reorden, costos.<br>• <strong>Requiere:</strong> solo un navegador web.',
+    'Modificar Parámetros': '<strong>Modificar parámetros:</strong> Cambia los valores de las variables en el código (ej. demanda de 6000 a 7800 unidades) y ejecuta nuevamente. Observa cómo cambian los resultados (EOQ, costos totales, punto de reorden).',
+    'Comparar Escenarios': '<strong>Comparar escenarios:</strong> Ejecuta el código con diferentes valores y compara los resultados en una tabla. Identifica qué escenario es más favorable según tus objetivos (minimizar costos, maximizar servicio, etc.).',
+    'Validar Juicio': '<strong>Validar con juicio profesional:</strong> La IA propone; tú decides. Verifica que los resultados tengan sentido lógico. Ajusta a restricciones reales (ej. el proveedor solo vende en lotes de 100 unidades). Considera factores cualitativos que la IA no puede evaluar.',
+    'Comunicar Solución': '<strong>Comunicar la solución:</strong> Una vez validada la solución, comunícala a tu equipo de manera clara. Usa las visualizaciones generadas por el código (gráficas, tablas) para presentar los resultados y justificar la decisión tomada.',
+    'Reto Alucinaciones': '<strong>Alucinaciones de la IA:</strong> La IA puede generar resultados incorrectos pero convincentes. Siempre valida los cálculos manualmente o con fuentes confiables antes de tomar decisiones basadas en ellos.',
+    'Reto Sesgos': '<strong>Sesgos en los datos:</strong> Si los datos históricos que usas como contexto tienen sesgos (ej. solo incluyen períodos de alta demanda), la IA generará recomendaciones sesgadas. Asegúrate de usar datos representativos.',
+    'Reto Dependencia': '<strong>Dependencia tecnológica:</strong> No dependas exclusivamente de la IA. Mantén tu conocimiento analítico actualizado. La IA es una herramienta, no un reemplazo de tu criterio profesional.',
+    'Reto Seguridad': '<strong>Seguridad de datos:</strong> Ten cuidado con la información confidencial que compartes con modelos de IA públicos. No incluyas datos sensibles de tu empresa (costos reales, estrategias) en prompts de modelos públicos.',
+    'Etica Transparencia': '<strong>Transparencia:</strong> Documenta cómo usaste la IA para llegar a una decisión. Registra el prompt usado, los datos de entrada, y las validaciones realizadas. Esto permite auditar el proceso si es necesario.',
+    'Etica Responsabilidad': '<strong>Responsabilidad humana:</strong> La responsabilidad final de las decisiones operativas siempre es humana. La IA es una herramienta de apoyo, pero el gerente de operaciones es quien debe validar, aprobar y asumir la responsabilidad.',
+    'Etica Equidad': '<strong>Equidad:</strong> Asegúrate de que las decisiones basadas en IA no discriminen a proveedores, clientes o empleados. Revisa que los algoritmos no perpetúen sesgos históricos.',
+    'Etica Privacidad': '<strong>Privacidad:</strong> Protege la información confidencial. Usa modelos de IA empresariales (con acuerdos de privacidad) cuando trabajes con datos sensibles.',
+    'Caso Inventarios': '<strong>Optimización de inventarios:</strong> Caso: Empresa retail con 500 SKUs. Prompt: "Calcula EOQ y punto de reorden para cada SKU considerando demanda histórica de 12 meses, costos de almacenamiento diferenciados por categoría, y restricciones de espacio en almacén. Genera código Python que procese un archivo CSV." Resultado: Reducción de 25% en costos de inventario manteniendo nivel de servicio.',
+    'Caso Pronóstico': '<strong>Pronóstico de demanda:</strong> Caso: Empresa de alimentos con estacionalidad marcada. Prompt: "Analiza datos de ventas de los últimos 3 años, identifica patrones estacionales, y genera código Python que proyecte demanda para los próximos 6 meses usando suavización exponencial." Resultado: Mejora de 30% en precisión del pronóstico.',
+    'Caso Rutas': '<strong>Optimización de rutas:</strong> Caso: Empresa de distribución con 20 vehículos y 150 puntos de entrega. Prompt: "Genera código Python que resuelva el problema de ruteo de vehículos (VRP) minimizando distancia total recorrida, considerando capacidad de vehículos y ventanas de tiempo." Resultado: Reducción de 18% en kilómetros recorridos.',
+    'Caso Calidad': '<strong>Control de calidad:</strong> Caso: Planta manufacturera con tasa de defectos del 4%. Prompt: "Analiza datos de 10,000 unidades producidas con 15 variables de proceso. Identifica qué variables tienen mayor correlación con defectos." Resultado: Identificación de 3 variables críticas y reducción de defectos al 1.5%.',
+    'Rec Colab': '<strong>Google Colab:</strong> Entorno gratuito para ejecutar código Python en la nube. Incluye librerías populares (Pandas, NumPy, Matplotlib, Scikit-learn). Ideal para análisis de datos operativos, optimización, y visualizaciones. Requiere: cuenta de Google.',
+    'Rec Modelos': '<strong>ChatGPT / Claude / Gemini:</strong> Modelos de IA generativa para crear prompts y generar código. Versiones gratuitas disponibles. Para uso empresarial con datos sensibles, considerar versiones empresariales con acuerdos de privacidad.',
+    'Rec Librerias': '<strong>Librerías Python recomendadas:</strong> Pandas (manejo de datos), NumPy (cálculos numéricos), Matplotlib/Seaborn (visualizaciones), PuLP (optimización lineal), SciPy (análisis estadístico), Prophet (pronósticos de series de tiempo).',
+    'Rec HTML': '<strong>Calculadoras HTML:</strong> Puedes pedirle a la IA que genere calculadoras HTML interactivas con sliders. Estas calculadoras funcionan en cualquier navegador, no requieren instalación, y son fáciles de compartir con tu equipo.'
+};
+
+const preKnowledgeQuestions = {
+    1: { question: "¿Qué diferencia fundamental existe entre la automatización tradicional y la IA generativa?", options: { a: "La automatización tradicional requiere programación avanzada, mientras que la IA generativa no necesita código", b: "La automatización tradicional ejecuta reglas fijas, mientras que la IA generativa aprende patrones y genera contenido nuevo", c: "La automatización tradicional es más costosa que la IA generativa en todos los casos de uso operativo", d: "La automatización tradicional solo funciona en manufactura, mientras que la IA generativa solo sirve para servicios" }, correct: "b", feedback: { a: "Ambas requieren algún nivel de configuración. La diferencia clave está en la capacidad de aprendizaje y generación, no en la necesidad de código.", b: "¡Excelente! La automatización tradicional sigue reglas predefinidas, mientras que la IA generativa (como GPT, Claude) puede aprender patrones de datos y generar contenido, código o soluciones nuevas.", c: "El costo depende del caso de uso. La IA generativa puede ser más costosa en operaciones a gran escala que la automatización tradicional bien implementada.", d: "Ambas tecnologías pueden aplicarse en manufactura y servicios. La diferencia no está en el sector, sino en la capacidad de adaptación y generación." } },
+    2: { question: "¿Qué es un 'prompt' en el contexto de la IA generativa?", options: { a: "Un error de programación que debe corregirse antes de ejecutar el código generado por la IA", b: "Una instrucción o conjunto de instrucciones que se le da a un modelo de IA para obtener una respuesta específica", c: "Un tipo de algoritmo de machine learning utilizado exclusivamente para optimización de inventarios", d: "Un software especializado que convierte datos operativos en visualizaciones gráficas automáticas" }, correct: "b", feedback: { a: "Un prompt no es un error; es la entrada o instrucción que le damos al modelo de IA para guiar su respuesta.", b: "¡Correcto! Un prompt es la instrucción (texto, pregunta o comando) que le proporcionamos a un modelo de IA generativa para obtener una respuesta, código o análisis específico.", c: "Un prompt no es un algoritmo; es una instrucción en lenguaje natural que usamos para interactuar con modelos de IA ya entrenados.", d: "Un prompt no es un software; es la entrada textual que usamos para comunicarnos con modelos de IA como ChatGPT, Claude, Gemini, etc." } },
+    3: { question: "¿Cuál es el principal riesgo de usar IA generativa sin validar los resultados?", options: { a: "Que el código generado sea demasiado complejo para entenderlo y modificarlo posteriormente", b: "Que la IA produzca 'alucinaciones' o resultados incorrectos que parezcan plausibles pero no sean válidos", c: "Que el modelo de IA se sobrecargue y deje de funcionar temporalmente por exceso de consultas", d: "Que la IA genere código en un lenguaje de programación diferente al que se solicitó en el prompt" }, correct: "b", feedback: { a: "Aunque el código puede ser complejo, el riesgo principal no es la complejidad, sino la precisión de los resultados.", b: "¡Exacto! Las 'alucinaciones' son respuestas incorrectas pero convincentes que la IA puede generar. Por eso la validación humana es crítica en decisiones operativas.", c: "Los modelos de IA en la nube tienen alta capacidad de procesamiento. El riesgo principal no es la sobrecarga, sino la calidad de los resultados.", d: "Los modelos modernos pueden especificar el lenguaje en el prompt. El riesgo crítico es la validez de los resultados, no el lenguaje de programación." } },
+    4: { question: "¿Qué herramienta mencionada en el recurso educativo permite ejecutar código Python en la nube sin instalación local?", options: { a: "Microsoft Excel con macros de Visual Basic para automatización de cálculos operativos", b: "Google Colab, un entorno de desarrollo gratuito que ejecuta notebooks de Python en la nube", c: "Tableau Software para visualización de datos operativos y creación de dashboards interactivos", d: "SAP ERP para gestión integrada de procesos operativos y cadena de suministro empresarial" }, correct: "b", feedback: { a: "Excel es una herramienta de hojas de cálculo, no un entorno para ejecutar código Python en la nube.", b: "¡Perfecto! Google Colab es un entorno gratuito basado en la nube que permite ejecutar código Python (notebooks) sin necesidad de instalación local, ideal para análisis operativos.", c: "Tableau es una herramienta de visualización de datos, no un entorno de ejecución de código Python.", d: "SAP ERP es un sistema de gestión empresarial, no un entorno para ejecutar código Python en la nube." } },
+    5: { question: "¿Por qué es importante la 'validación humana' en el flujo de IA generativa para operaciones?", options: { a: "Porque la IA generativa no puede procesar datos numéricos y solo funciona con texto descriptivo de procesos operativos", b: "Porque el juicio profesional permite verificar que los resultados tengan sentido, se ajusten a restricciones reales y sean aplicables", c: "Porque las empresas requieren que un humano firme todos los documentos generados por IA para cumplir con normativas legales", d: "Porque la IA generativa solo puede trabajar con datos históricos y no puede analizar escenarios futuros o hipotéticos" }, correct: "b", feedback: { a: "La IA generativa sí puede procesar datos numéricos y realizar cálculos. La validación humana no se debe a limitaciones técnicas de procesamiento.", b: "¡Excelente! La validación humana es crítica porque el profesional verifica que los resultados sean lógicos, se ajusten a restricciones reales (ej. el proveedor vende en cajas de 100) y sean aplicables al contexto específico.", c: "Aunque algunas normativas pueden requerir revisión humana, la razón principal de la validación es la calidad y aplicabilidad de los resultados, no solo cumplimiento legal.", d: "La IA generativa sí puede analizar escenarios futuros mediante simulaciones. La validación humana se necesita para curar resultados, no porque la IA no pueda proyectar." } }
+};
+
+const learningQuestions = {
+    1: { question: "¿Cuál sería el primer paso del flujo 'Del Prompt a la Decisión' para abordar el problema de inventarios en TechParts S.A.?", options: { a: "Generar inmediatamente un código Python en Google Colab que calcule el EOQ para todos los productos sin analizar el problema previamente", b: "Categorizar el problema como de 'inventarios' e identificar las variables clave (demanda, costos de ordenar, costos de mantenimiento)", c: "Escribir un prompt genérico pidiendo a la IA que 'mejore la gestión de inventarios' sin especificar datos ni restricciones", d: "Comprar un software comercial de gestión de inventarios sin explorar primero soluciones con IA generativa" }, correct: "b", feedback: { a: "Generar código sin categorizar el problema ni identificar variables es saltarse pasos críticos del flujo. El código resultante probablemente no refleje la realidad operativa.", b: "¡Excelente! El primer paso es categorizar el problema (inventarios) e identificar las variables clave (demanda de cada producto, costos de ordenar, costos de mantenimiento, restricciones de espacio). Esto permite diseñar un prompt efectivo.", c: "Un prompt genérico sin datos específicos generará una respuesta genérica que no resolverá el problema específico de TechParts S.A.", d: "Aunque un software comercial puede ser útil, el flujo del recurso educativo enseña a usar IA generativa como herramienta de análisis y toma de decisiones, no a reemplazarla con software tradicional." } },
+    2: { question: "Para el problema de pronóstico de demanda con error del 35%, ¿qué variables clave debería identificar TechParts S.A. antes de diseñar el prompt?", options: { a: "Solo la demanda histórica de los últimos 3 meses, ya que datos más antiguos no son relevantes para el pronóstico futuro", b: "Demanda histórica de al menos 2-3 años, patrones estacionales, tendencias de crecimiento, y factores externos (clima, eventos económicos)", c: "Únicamente el costo de producción de cada producto y el precio de venta al cliente final", d: "El nombre y la ubicación de los 15 clientes actuales, sin considerar datos de demanda histórica" }, correct: "b", feedback: { a: "3 meses de datos son insuficientes para identificar patrones estacionales o tendencias. Se necesitan al menos 2-3 años de datos históricos para un pronóstico robusto.", b: "¡Correcto! Para un pronóstico preciso, necesitas demanda histórica suficiente (2-3 años), patrones estacionales, tendencias, y factores externos que afecten la demanda. Estas variables se incluirán en el prompt.", c: "El costo y precio son importantes para decisiones de rentabilidad, pero no son las variables clave para pronosticar demanda. Necesitas datos de ventas históricas y factores que la afecten.", d: "Conocer los clientes es importante para la logística, pero no es suficiente para pronosticar demanda. Necesitas datos cuantitativos de ventas históricas y patrones de comportamiento." } },
+    3: { question: "TechParts S.A. quiere optimizar las rutas de distribución para reducir el 25% de costos de transporte. ¿Cuál sería un prompt efectivo para este problema?", options: { a: "'Ayúdame a reducir costos de transporte'", b: "'Genera código Python que resuelva el problema de ruteo de vehículos (VRP) para 15 puntos de entrega en Colombia, Ecuador y Perú, minimizando distancia total, considerando capacidad de 5 vehículos (2 toneladas cada uno), ventanas de entrega de 8am-6pm, y tiempos de servicio de 30 minutos por cliente. Usa datos de distancias reales entre ciudades.'", c: "'¿Cuál es la mejor ruta para entregar productos en Sudamérica?'", d: "'Crea un mapa de Colombia mostrando las rutas de transporte más comunes usadas por empresas de manufactura'" }, correct: "b", feedback: { a: "Este prompt es demasiado genérico. No especifica el problema (ruteo de vehículos), no incluye datos (puntos de entrega, capacidades), ni indica el formato de salida esperado.", b: "¡Excelente! Este prompt es efectivo porque: 1) Es específico (VRP), 2) Incluye todos los datos necesarios (15 puntos, 5 vehículos, capacidades, ventanas de tiempo), 3) Define el objetivo (minimizar distancia), 4) Es explícito sobre el formato (código Python).", c: "Pregunta demasiado amplia y vaga. No proporciona datos específicos de TechParts S.A. ni indica qué tipo de solución se necesita (código, explicación, tabla).", d: "Este prompt pide un mapa genérico, no una solución al problema específico de optimización de rutas de TechParts S.A. No generará código ejecutable para optimización." } },
+    4: { question: "La IA generativa produce un código Python para calcular EOQ, pero al ejecutarlo en Google Colab, los resultados muestran cantidades decimales (ej. 237.5 unidades). ¿Qué debe hacer el gerente de operaciones?", options: { a: "Aceptar los resultados tal cual, ya que la IA es más precisa que el juicio humano en cálculos matemáticos", b: "Validar los resultados y ajustar a restricciones reales (ej. el proveedor vende en lotes de 50 unidades, por lo que se debe redondear a 250 unidades)", c: "Descartar completamente el código y buscar otro modelo de IA que produzca resultados diferentes", d: "Modificar manualmente el código para que siempre redondee hacia arriba, sin considerar si es la mejor opción operativa" }, correct: "b", feedback: { a: "Aunque la IA puede hacer cálculos precisos, no conoce las restricciones operativas reales (tamaños de lote de proveedores, capacidades de almacenamiento). La validación humana es crítica.", b: "¡Perfecto! La validación humana es esencial. Si el proveedor vende en lotes de 50 unidades, debes ajustar el resultado (237.5 → 250 unidades) para que sea aplicable en la realidad operativa.", c: "Descartar el código por resultados decimales es innecesario. Los modelos de optimización frecuentemente producen resultados decimales que deben ajustarse a restricciones prácticas.", d: "Redondear siempre hacia arriba puede no ser la mejor opción. Depende de los costos: si el costo de mantenimiento es alto, quizás sea mejor redondear hacia abajo (200 unidades) y ordenar con más frecuencia." } },
+    5: { question: "TechParts S.A. quiere crear una herramienta interactiva para que el equipo de compras calcule rápidamente el EOQ sin necesidad de usar Google Colab. ¿Qué debería solicitar en el prompt?", options: { a: "'Genera un documento de Word explicando cómo calcular el EOQ manualmente con fórmulas matemáticas'", b: "'Crea una calculadora HTML interactiva con sliders para modificar demanda, costo de ordenar y costo de mantenimiento, que calcule EOQ automáticamente y muestre resultados en tiempo real'", c: "'Escribe un manual de 50 páginas sobre la teoría de inventarios y métodos de cálculo de EOQ'", d: "'Genera una presentación de PowerPoint con 20 diapositivas explicando la importancia del EOQ en la gestión de operaciones'" }, correct: "b", feedback: { a: "Un documento de Word no es una herramienta interactiva. El equipo tendría que hacer los cálculos manualmente, lo cual es menos eficiente.", b: "¡Excelente! Una calculadora HTML con sliders es interactiva, funciona en cualquier navegador, no requiere instalación, y permite al equipo modificar parámetros y ver resultados en tiempo real. Es fácil de compartir.", c: "Un manual extenso es teórico y no resuelve la necesidad práctica de calcular EOQ rápidamente. Además, 50 páginas es excesivo para una herramienta operativa.", d: "Una presentación es útil para capacitación, pero no es una herramienta interactiva de cálculo. El equipo no podría usarla para calcular EOQ en su trabajo diario." } },
+    6: { question: "Al analizar escenarios con el código generado, TechParts S.A. descubre que si la demanda aumenta 30%, el EOQ óptimo cambia significativamente. ¿Qué debe hacer el gerente con esta información?", options: { a: "Ignorar el escenario de aumento de demanda porque es hipotético y no ha ocurrido todavía", b: "Usar esta información para planificar contingencias: ajustar capacidades de almacén, negociar con proveedores, y preparar planes de acción si la demanda aumenta", c: "Asumir que la demanda definitivamente aumentará 30% y hacer todos los cambios operativos inmediatamente", d: "Descartar el análisis de escenarios porque genera incertidumbre y complica la toma de decisiones" }, correct: "b", feedback: { a: "Ignorar escenarios hipotéticos es perder el valor del análisis. La planificación de contingencias es fundamental en gestión de operaciones para ser resiliente ante cambios.", b: "¡Perfecto! El análisis de escenarios permite planificar contingencias. Si la demanda puede aumentar 30%, debes preparar capacidades de almacén, negociar con proveedores, y tener planes de acción listos.", c: "Asumir que un escenario hipotético definitivamente ocurrirá es riesgoso. El análisis de escenarios explora posibilidades, no predicciones ciertas. Debes prepararte, no actuar prematuramente.", d: "El análisis de escenarios no complica la toma de decisiones; la mejora. Te permite estar preparado para diferentes futuros posibles y tomar decisiones más informadas." } },
+    7: { question: "TechParts S.A. quiere usar IA generativa para analizar la tasa de defectos del 5%. ¿Qué tipo de análisis debería solicitar en el prompt?", options: { a: "'Genera un código Python que analice 10,000 registros de producción con 15 variables de proceso (temperatura, presión, velocidad, etc.) e identifique cuáles tienen mayor correlación con defectos usando análisis estadístico y visualizaciones'", b: "'Escribe un ensayo de 1,000 palabras sobre la importancia de la calidad en la industria manufacturera'", c: "'Crea una lista de las 10 empresas con mejores prácticas de calidad en el mundo'", d: "'Genera un código que automáticamente elimine todos los productos defectuosos de la línea de producción sin analizar las causas'" }, correct: "a", feedback: { a: "¡Excelente! Este prompt es efectivo porque: 1) Es específico (análisis de correlación), 2) Incluye datos (10,000 registros, 15 variables), 3) Define el objetivo (identificar variables críticas), 4) Solicita visualizaciones para interpretar resultados.", b: "Un ensayo teórico no resuelve el problema práctico de reducir la tasa de defectos. Necesitas análisis de datos, no teoría general.", c: "Conocer mejores prácticas es útil, pero no analiza los datos específicos de TechParts S.A. para identificar las causas de sus defectos.", d: "Eliminar productos defectuosos sin analizar causas es reactivo y costoso. El objetivo es identificar y corregir las causas raíz para prevenir defectos, no solo detectarlos." } },
+    8: { question: "El gerente de TechParts S.A. comparte datos confidenciales de costos y estrategias de la empresa en un prompt de ChatGPT (versión gratuita). ¿Qué riesgo ético y de gobernanza representa esto?", options: { a: "Ningún riesgo, ya que los modelos de IA están diseñados para proteger automáticamente toda la información que reciben", b: "Riesgo de fuga de información confidencial, ya que los datos compartidos en modelos públicos pueden ser usados para entrenar futuros modelos o accesibles por terceros", c: "Riesgo menor, ya que solo el gerente tiene acceso a la cuenta de ChatGPT y nadie más puede ver los prompts", d: "Riesgo de que la IA genere código incorrecto por estar expuesta a demasiada información confidencial" }, correct: "b", feedback: { a: "Los modelos de IA públicos NO protegen automáticamente la información. Los términos de servicio de ChatGPT gratuito indican que los datos pueden usarse para entrenamiento.", b: "¡Correcto! Compartir datos confidenciales en modelos públicos representa un riesgo de fuga de información. Los datos pueden ser usados para entrenar modelos o, en casos de vulnerabilidades, accesibles por terceros.", c: "Aunque solo el gerente tenga acceso a la cuenta, los datos compartidos en modelos públicos no están protegidos contra uso por la empresa proveedora del modelo.", d: "El riesgo no es que la IA genere código incorrecto por 'demasiada información'. El riesgo es la exposición de información confidencial de la empresa." } },
+    9: { question: "Después de 6 meses de implementar el flujo 'Del Prompt a la Decisión', TechParts S.A. quiere medir el éxito del proyecto. ¿Cuál sería el KPI más apropiado?", options: { a: "Número de prompts escritos por el equipo de operaciones durante los 6 meses", b: "Cantidad de código Python generado por la IA generativa en Google Colab", c: "Mejora en KPIs operativos clave: reducción de costos de inventario, mejora en precisión de pronósticos, reducción de costos de transporte, disminución de tasa de defectos", d: "Número de empleados que asistieron a capacitaciones sobre IA generativa" }, correct: "c", feedback: { a: "El número de prompts no mide el impacto real. Puedes escribir muchos prompts sin generar valor operativo si no se traducen en mejoras tangibles.", b: "La cantidad de código generado no es un indicador de éxito. El valor está en cómo ese código mejora las decisiones y resultados operativos.", c: "¡Excelente! Los KPIs operativos (reducción de costos, mejora en precisión, disminución de defectos) miden el valor real generado por la implementación de IA generativa.", d: "La asistencia a capacitaciones es un indicador de esfuerzo, no de resultados. El éxito se mide por mejoras operativas tangibles, no por participación en entrenamientos." } },
+    10: { question: "TechParts S.A. quiere escalar el uso de IA generativa a otras áreas (finanzas, marketing, RRHH). ¿Cuál sería el siguiente paso más apropiado?", options: { a: "Detener el proyecto en operaciones considerando que ya se lograron los objetivos iniciales y no es necesario expandirlo", b: "Documentar las mejores prácticas del proyecto en operaciones, crear guías de prompts efectivos por área, y capacitar a líderes de otras áreas en el flujo 'Del Prompt a la Decisión'", c: "Contratar a una empresa externa para que implemente IA generativa en todas las áreas sin involucrar al equipo interno", d: "Obligar a todas las áreas a usar IA generativa inmediatamente sin capacitación ni guías, asumiendo que aprenderán por su cuenta" }, correct: "b", feedback: { a: "Detener el proyecto es perder la oportunidad de generar valor en otras áreas. La IA generativa puede beneficiar a toda la organización, no solo a operaciones.", b: "¡Perfecto! Documentar mejores prácticas, crear guías específicas por área, y capacitar a líderes es el enfoque correcto para escalar de manera sostenible y efectiva.", c: "Externalizar completamente la implementación pierde el conocimiento interno desarrollado. Es mejor combinar experiencia interna con apoyo externo si es necesario.", d: "Obligar el uso sin capacitación ni guías genera resistencia, malos usos de la herramienta, y resultados pobres. El cambio debe ser gestionado con capacitación y soporte." } }
+};
+
+// Inicialización: al cargar la página, leer la portada automáticamente
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const text = getSlideText();
+        if (text) speakText(text);
+    }, 1000);
+});
+
+// También cuando se cambia a la portada o a resultados, ya se maneja en changeSlide
+
+// Initialize navigation
+document.getElementById('prevBtn').disabled = true;
+updateProgress();
+updateResults();
+</script>
+</body>
+</html>
